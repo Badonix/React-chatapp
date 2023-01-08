@@ -1,10 +1,38 @@
 import React from "react";
+import { useRef } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { TbSend } from "react-icons/tb";
+import { useState } from "react";
 import { RiAttachment2 } from "react-icons/ri";
 import SentMessage from "./SentMessage";
 import RecievedMessage from "./RecievedMessage";
 function Chat() {
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const handleSendMessage = () => {
+    if (inputValue) {
+      setMessages((prev) => [...prev, { message: inputValue }]);
+      setInputValue("");
+      const el = document.querySelector(".chat-body");
+      if (el) {
+        el.scrollTop = el.scrollHeight;
+      }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      if (inputValue) {
+        setMessages((prev) => [...prev, { message: inputValue }]);
+        setInputValue("");
+        const el = document.querySelector(".chat-body");
+        if (el) {
+          el.scrollTop = el.scrollHeight;
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className="chat-header">
@@ -17,32 +45,27 @@ function Chat() {
         </div>
       </div>
       <div className="chat-body">
-        <SentMessage />
         <RecievedMessage />
-        <SentMessage />
-        <RecievedMessage />
-        <SentMessage />
-        <RecievedMessage />
-        <SentMessage />
-        <SentMessage />
-        <SentMessage />
-        <RecievedMessage />
-        <RecievedMessage />
-        <SentMessage />
-        <SentMessage />
-        <RecievedMessage />
-        <RecievedMessage />
-        <SentMessage />
-        <SentMessage />
-        <RecievedMessage />
-        <RecievedMessage />
+        {messages.map((el) => {
+          return <SentMessage message={el.message} />;
+        })}
+        <div className="dummy"></div>
       </div>
       <div className="chat-footer">
-        <input placeholder="Write a message..." type="text" />
+        <input
+          onKeyDown={handleKeyDown}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Write a message..."
+          type="text"
+        />
         <div className="chat-footer-buttons-cont">
           <RiAttachment2 className="chat-footer-btn" />
         </div>
-        <div className="chat-footer-buttons-cont send-btn">
+        <div
+          onClick={handleSendMessage}
+          className="chat-footer-buttons-cont send-btn"
+        >
           <TbSend className="chat-footer-btn " />
         </div>
       </div>

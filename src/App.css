@@ -456,3 +456,7 @@ main {
   background-color: var(--text-secondary-color);
   visibility: hidden;
 }
+.dummy {
+  position: absolute;
+  bottom: 0;
+}

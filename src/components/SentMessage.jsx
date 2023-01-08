@@ -1,10 +1,10 @@
 import React from "react";
 
-function SentMessage() {
+function SentMessage({ message }) {
   return (
     <div className="sent-message">
       <div className="sent-message-cont">
-        <p>gamarjoba erti ori</p>
+        <p>{message}</p>
       </div>
     </div>
   );
