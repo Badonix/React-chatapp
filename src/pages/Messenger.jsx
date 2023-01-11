@@ -6,16 +6,26 @@ import ChatSection from "../components/ChatSection";
 import Chat from "../components/Chat";
 function Messenger() {
   const [currentSection, setCurrentSection] = useState("chat");
+  const [burgerMenu, setBurgerMenu] = useState(false);
 
   return (
     <div className="msngr">
       <Sidebar
+        burgerMenu={burgerMenu}
         currentSection={currentSection}
         setCurrentSection={setCurrentSection}
+        setBurgerMenu={setBurgerMenu}
       />
-      {currentSection == "chat" ? <ChatSection /> : <FriendSection />}
+      {currentSection == "chat" ? (
+        <ChatSection className="chat-section" />
+      ) : (
+        <FriendSection
+          setBurgerMenu={setBurgerMenu}
+          className="friend-section"
+        />
+      )}
       <main>
-        <Chat />
+        <Chat setBurgerMenu={setBurgerMenu} />
       </main>
     </div>
   );

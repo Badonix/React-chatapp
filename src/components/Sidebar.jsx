@@ -1,11 +1,16 @@
 import React, { useRef } from "react";
 import { BsChatSquare } from "react-icons/bs";
 import { BsPerson } from "react-icons/bs";
-import { BsMoon } from "react-icons/bs";
 import img from "../images/logo.png";
-import { useEffect } from "react";
-import { useState } from "react";
-function Sidebar({ currentSection, setCurrentSection }) {
+import { RiCloseFill } from "react-icons/ri";
+import { useState, useEffect } from "react";
+import useClickOutside from "../hooks/useClickOutside";
+function Sidebar({
+  currentSection,
+  setCurrentSection,
+  setBurgerMenu,
+  burgerMenu,
+}) {
   const [dropDown, setDropDown] = useState(false);
   const dropdownRef = useRef(null);
   const handleClick = (event) => {
@@ -21,15 +26,32 @@ function Sidebar({ currentSection, setCurrentSection }) {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+  const ref = useRef(null);
+  useClickOutside(ref, () => {
+    if (burgerMenu) {
+      setBurgerMenu(false);
+    }
+  });
+
   return (
-    <aside>
+    <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
       <div className="top-sidebar">
+        <div className="close-btn-cont">
+          <RiCloseFill
+            onClick={() => setBurgerMenu(false)}
+            className="close-btn"
+          />
+        </div>
+
         <div className="logo-container">
           <img src={img} />
         </div>
         <div className="navigation-icons">
           <div
-            onClick={() => setCurrentSection("chat")}
+            onClick={() => {
+              setCurrentSection("chat");
+              setBurgerMenu(false);
+            }}
             className={
               currentSection == "chat"
                 ? "new-notif nav-icon-cont active"
@@ -39,7 +61,10 @@ function Sidebar({ currentSection, setCurrentSection }) {
             <BsChatSquare className="nav-icon" />
           </div>
           <div
-            onClick={() => setCurrentSection("friends")}
+            onClick={() => {
+              setCurrentSection("friends");
+              setBurgerMenu(false);
+            }}
             className={
               currentSection != "chat"
                 ? "new-notif nav-icon-cont active"

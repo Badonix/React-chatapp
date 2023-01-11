@@ -5,7 +5,7 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 
 function ChatSection() {
   return (
-    <section>
+    <section className="chat-section">
       <header>
         <span>Chats</span>
         <ul>
