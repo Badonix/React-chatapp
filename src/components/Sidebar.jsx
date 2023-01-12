@@ -5,6 +5,7 @@ import img from "../images/logo.png";
 import { RiCloseFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import useClickOutside from "../hooks/useClickOutside";
+import { Link } from "react-router-dom";
 function Sidebar({
   currentSection,
   setCurrentSection,
@@ -79,9 +80,14 @@ function Sidebar({
         <div className="navigation-icons">
           {dropDown && (
             <div className="profile-dropdown">
-              <p>Profile</p>
+              <Link to="/profile">
+                {" "}
+                <p>Profile</p>
+              </Link>
               <div className="dropdown-line"></div>
-              <p className="logout">Log out</p>
+              <Link to="/login">
+                <p className="logout">Log out</p>
+              </Link>
             </div>
           )}
           <div

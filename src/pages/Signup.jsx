@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { BsUpload } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 function Signup() {
+  const navigate = useNavigate();
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
   return (
-    <form className="user-form">
+    <form onSubmit={handleFormSubmit} className="user-form">
       <div className="form-container">
         <h2>Register</h2>
         <div className="input-container">
