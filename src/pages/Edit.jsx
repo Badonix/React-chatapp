@@ -40,7 +40,6 @@ function Edit() {
         </div>
         <div className="edit-input-cont">
           <input type="text" placeholder="Username" />
-
           <input type="text" placeholder="About Me" />
         </div>
         <button className="save-edits">Save</button>

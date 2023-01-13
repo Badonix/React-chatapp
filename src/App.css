@@ -573,6 +573,7 @@ main {
   height: 100%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 .form-container {
@@ -762,4 +763,45 @@ form .button-div a:hover {
 }
 .save-edits:hover {
   background-color: #1f273b;
+}
+.uploaded-img-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.form-container {
+  position: relative;
+}
+.error-cont {
+  padding: 10px;
+  display: none;
+  background-color: pink;
+  border: 2px solid red;
+  border-radius: 10px;
+  transition: 0.3s;
+  position: absolute;
+  bottom: -50px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.315);
+  color: red;
+  font-size: 20px;
+  animation: error-in 1s ease-in-out;
+}
+.on {
+  display: block;
+}
+@keyframes error-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
