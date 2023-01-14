@@ -13,6 +13,7 @@ function Signup() {
   const [pfpUrl, setPfpurl] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [Error, setError] = useState();
+  const [loading, setLoading] = useState(false);
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (confirmPassword == password && pfp) {
@@ -23,7 +24,7 @@ function Signup() {
         username,
         picture: pfp,
       };
-
+      setLoading(true);
       axios
         .post("http://localhost:4000/api/users/signup", formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -31,9 +32,12 @@ function Signup() {
         .then((response) => {
           console.log(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));
+          setLoading(false);
           navigate("/");
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error);
           setError(error.response.data);
         });
@@ -94,7 +98,11 @@ function Signup() {
           {pfpUrl && <img className="uploaded-img-preview" src={pfpUrl} />}
         </div>
         <div className="button-div">
-          <button type="submit">Register</button>
+          {loading ? (
+            <div className="loader"></div>
+          ) : (
+            <button type="submit">Register</button>
+          )}
           <span>
             <Link to="/login">Log in</Link> instead
           </span>

@@ -805,3 +805,23 @@ form .button-div a:hover {
     transform: translateY(0);
   }
 }
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  border-left-color: gray;
+  border-top-color: gray;
+  border-bottom-color: gray;
+  animation: spin 1s infinite ease-in-out;
+}
+
+@keyframes spin {
+  0% {
+    rotate: 0;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
