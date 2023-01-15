@@ -4,6 +4,7 @@ import { BsUpload } from "react-icons/bs";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context";
 function Signup() {
   const navigate = useNavigate();
   const [pfp, setPfp] = useState();
@@ -14,6 +15,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [Error, setError] = useState();
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useGlobalContext();
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (confirmPassword == password && pfp) {
@@ -32,6 +34,7 @@ function Signup() {
         .then((response) => {
           console.log(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));
+          setUser(response.data);
           setLoading(false);
           navigate("/");
         })

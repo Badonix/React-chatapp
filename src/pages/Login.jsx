@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context";
 function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState();
+  const { user, setUser } = useGlobalContext();
+
   const [loading, setLoading] = useState(false);
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +22,7 @@ function Login() {
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
+        setUser(response.data);
         setLoading(false);
         navigate("/");
       })

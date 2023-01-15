@@ -6,6 +6,7 @@ import { RiCloseFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import useClickOutside from "../hooks/useClickOutside";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../context";
 function Sidebar({
   currentSection,
   setCurrentSection,
@@ -14,12 +15,17 @@ function Sidebar({
 }) {
   const [dropDown, setDropDown] = useState(false);
   const dropdownRef = useRef(null);
+  const { user, setUser } = useGlobalContext();
   const handleClick = (event) => {
     if (!dropDown) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropDown(false);
       }
     }
+  };
+  const handleLogout = () => {
+    setUser("");
+    localStorage.removeItem("user");
   };
   useEffect(() => {
     document.addEventListener("click", handleClick);
@@ -85,7 +91,7 @@ function Sidebar({
                 <p>Profile</p>
               </Link>
               <div className="dropdown-line"></div>
-              <Link to="/login">
+              <Link onClick={handleLogout}>
                 <p className="logout">Log out</p>
               </Link>
             </div>
