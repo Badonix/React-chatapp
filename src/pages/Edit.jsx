@@ -1,9 +1,11 @@
 import React from "react";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { FaRegAddressCard } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { SlPicture } from "react-icons/sl";
+import { AiOutlineHome } from "react-icons/ai";
+import { useGlobalContext } from "../context";
 function Edit() {
+  const { user, image, baseURL } = useGlobalContext();
   return (
     <section
       style={{
@@ -15,16 +17,13 @@ function Edit() {
     >
       <div className="profilepage-container">
         <Link to="/">
-          <MdOutlineKeyboardBackspace className="go-back-icon" />
+          <AiOutlineHome className="go-back-icon" />
         </Link>
         <Link to="/profile">
           <FaRegAddressCard className="edit-icon" />
         </Link>
         <div className="edit-image-cont">
-          <img
-            src="https://pbs.twimg.com/media/FgYA_RAWQAEWCw3.jpg"
-            className="profile-pfp"
-          />
+          <img src={`${baseURL}images/${image}`} className="profile-pfp" />
           <div htmlFor="update-image" className="edit-image-overlay">
             <label htmlFor="update-image">
               <SlPicture className="update-image-icon" />
@@ -39,8 +38,8 @@ function Edit() {
           </div>
         </div>
         <div className="edit-input-cont">
-          <input type="text" placeholder="Username" />
-          <input type="text" placeholder="About Me" />
+          <input type="text" placeholder={user.username} />
+          <input type="text" placeholder={user.email} />
         </div>
         <button className="save-edits">Save</button>
       </div>

@@ -15,7 +15,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [Error, setError] = useState();
   const [loading, setLoading] = useState(false);
-  const { user, setUser } = useGlobalContext();
+  const { user, setUser, baseURL } = useGlobalContext();
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (confirmPassword == password && pfp) {
@@ -28,7 +28,7 @@ function Signup() {
       };
       setLoading(true);
       axios
-        .post("http://localhost:4000/api/users/signup", formData, {
+        .post(`${baseURL}api/users/signup`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {

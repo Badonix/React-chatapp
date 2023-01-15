@@ -9,9 +9,10 @@ import Edit from "./pages/Edit";
 import Login from "./pages/Login";
 import { useGlobalContext } from "./context";
 function App() {
-  const { user, setUser } = useGlobalContext();
+  const { user, setUser, image } = useGlobalContext();
   useEffect(() => {
     console.log(user);
+    console.log(image);
   }, [user]);
   return (
     <BrowserRouter>

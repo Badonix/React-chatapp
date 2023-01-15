@@ -1,8 +1,10 @@
 import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import { AiOutlineHome } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../context";
 function Profile() {
+  const { user, image, baseURL } = useGlobalContext();
   return (
     <section
       style={{
@@ -14,20 +16,14 @@ function Profile() {
     >
       <div className="profilepage-container">
         <Link to="/">
-          <MdOutlineKeyboardBackspace className="go-back-icon" />
+          <AiOutlineHome className="go-back-icon" />
         </Link>
         <Link to="/edit">
           <AiOutlineEdit className="edit-icon" />
         </Link>
-        <img
-          src="https://pbs.twimg.com/media/FgYA_RAWQAEWCw3.jpg"
-          className="profile-pfp"
-        />
-        <h2>Nick Dane</h2>
-        <h3>
-          About me over here chilling biling About me over here chilling biling
-          About me over here chilling biling
-        </h3>
+        <img src={`${baseURL}images/${image}`} className="profile-pfp" />
+        <h2>{user.username}</h2>
+        <h3>{user.email}</h3>
         <p>Friends: 19</p>
       </div>
     </section>

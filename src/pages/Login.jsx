@@ -9,14 +9,14 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState();
-  const { user, setUser } = useGlobalContext();
+  const { user, setUser, baseURL } = useGlobalContext();
 
   const [loading, setLoading] = useState(false);
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const formData = { username, password };
     axios
-      .post("http://localhost:4000/api/users/login", formData, {
+      .post(`${baseURL}api/users/login`, formData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {

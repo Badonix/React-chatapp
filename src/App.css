@@ -96,6 +96,7 @@ aside .top-sidebar .logo-container:hover {
   width: 30px;
   object-fit: cover;
   border-radius: 50%;
+  height: 30px;
 }
 .profile-cont {
   padding: 12px;
@@ -659,6 +660,7 @@ form .button-div a:hover {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  width: 90%;
   align-items: center;
   gap: 10px;
   border-radius: 5px;

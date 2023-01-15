@@ -15,7 +15,7 @@ function Sidebar({
 }) {
   const [dropDown, setDropDown] = useState(false);
   const dropdownRef = useRef(null);
-  const { user, setUser } = useGlobalContext();
+  const { user, setUser, image, baseURL } = useGlobalContext();
   const handleClick = (event) => {
     if (!dropDown) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -39,7 +39,6 @@ function Sidebar({
       setBurgerMenu(false);
     }
   });
-
   return (
     <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
       <div className="top-sidebar">
@@ -103,7 +102,7 @@ function Sidebar({
           >
             <img
               className="nav-profile-image"
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              src={`${baseURL}images/${image}`}
             />
           </div>
         </div>
