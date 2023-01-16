@@ -21,14 +21,8 @@ function Edit() {
   const handleProfileUpdate = (e) => {
     setError("");
     e.preventDefault();
-    if (emailUpdated == user.email) {
-      setError("Can't change the email to current one");
-      return;
-    } else if (usernameUpdated == user.username) {
-      setError("Can't change the username to current one");
-      return;
-    }
-    if (emailUpdated || usernameUpdated) {
+
+    if (emailUpdated || usernameUpdated || file) {
       setLoading(true);
       setError(false);
       console.log(file);
@@ -49,7 +43,7 @@ function Edit() {
             email: res.data.email,
             username: res.data.username,
             token: user.token,
-            picture: user.picture,
+            picture: res.data.picture,
             id: user.id,
           });
           localStorage.setItem("user", JSON.stringify(user));
@@ -98,7 +92,10 @@ function Edit() {
           <FaRegAddressCard className="edit-icon" />
         </Link>
         <div className="edit-image-cont">
-          <img src={fileUrl || photoURL} className="profile-pfp" />
+          <img
+            src={fileUrl || `${baseURL}images/${user.picture.split("\\")[1]}`}
+            className="profile-pfp"
+          />
           <div htmlFor="update-image" className="edit-image-overlay">
             <label htmlFor="update-image">
               <SlPicture className="update-image-icon" />

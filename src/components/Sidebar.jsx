@@ -102,7 +102,7 @@ function Sidebar({
           >
             <img
               className="nav-profile-image"
-              src={`${baseURL}images/${image}`}
+              src={`${baseURL}images/${user.picture.split("\\")[1]}`}
             />
           </div>
         </div>

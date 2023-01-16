@@ -11,9 +11,7 @@ const AppProvider = ({ children }) => {
       setUser(JSON.parse(localStorage.getItem("user")));
     }
   }, []);
-  useEffect(() => {
-    user ? setImage(user.picture.split("\\")[1]) : "";
-  }, [user]);
+
   return (
     <AppContext.Provider value={{ baseURL, user, setUser, image }}>
       {children}
