@@ -10,11 +10,23 @@ import { useNavigate } from "react-router-dom";
 function Edit() {
   const { user, image, baseURL, setUser } = useGlobalContext();
   const [emailUpdated, setEmailUpdated] = useState();
+  const [Error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [usernameUpdated, setUsernameUpdated] = useState();
   const [imageUpdated, setImageUpdated] = useState();
   const navigate = useNavigate();
   const handleProfileUpdate = () => {
+    setError("");
+    if (emailUpdated == user.email) {
+      setError("Can't change the email to current one");
+      return;
+    } else if (usernameUpdated == user.username) {
+      setError("Can't change the username to current one");
+      return;
+    }
     if (emailUpdated || usernameUpdated) {
+      setLoading(true);
+      setError(false);
       const formData = {
         usernameUpdated: usernameUpdated || user.username,
         emailUpdated: emailUpdated || user.email,
@@ -22,11 +34,12 @@ function Edit() {
       };
       axios
         .put(`${baseURL}api/users/edit`, formData, {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
           console.log(usernameUpdated, emailUpdated);
           console.log(res.data);
+          setLoading(false);
           setUser({
             email: res.data.email,
             username: res.data.username,
@@ -37,9 +50,11 @@ function Edit() {
           navigate("/");
         })
         .catch((error) => {
-          console.log(formData);
-          console.log(error);
+          setLoading(false);
+          setError(error.response.data.error);
         });
+    } else {
+      setError("Fill in all fields!");
     }
   };
   return (
@@ -51,7 +66,14 @@ function Edit() {
         height: "100%",
       }}
     >
-      <div className="profilepage-container">
+      <div
+        className="profilepage-container"
+        style={{
+          position: "relative",
+        }}
+      >
+        <div className={Error ? "error-cont on" : "error-cont"}>{Error}</div>
+
         <Link to="/">
           <AiOutlineHome className="go-back-icon" />
         </Link>
@@ -87,9 +109,13 @@ function Edit() {
             placeholder={user.email}
           />
         </div>
-        <button onClick={handleProfileUpdate} className="save-edits">
-          Save
-        </button>
+        {loading ? (
+          <div className="loader"></div>
+        ) : (
+          <button onClick={handleProfileUpdate} className="save-edits">
+            Save
+          </button>
+        )}
       </div>
     </section>
   );
