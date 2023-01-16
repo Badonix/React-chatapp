@@ -21,7 +21,10 @@ function Profile() {
         <Link to="/edit">
           <AiOutlineEdit className="edit-icon" />
         </Link>
-        <img src={`${baseURL}images/${image}`} className="profile-pfp" />
+        <img
+          src={`${baseURL}images/${user.picture.split("\\")[1]}`}
+          className="profile-pfp"
+        />
         <h2>{user.username}</h2>
         <h3>{user.email}</h3>
         <p>Friends: 19</p>

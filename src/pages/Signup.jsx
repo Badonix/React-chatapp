@@ -20,12 +20,12 @@ function Signup() {
     e.preventDefault();
     if (confirmPassword == password && pfp) {
       console.log(confirmPassword, password, pfp, email, username);
-      const formData = {
-        email,
-        password,
-        username,
-        picture: pfp,
-      };
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("username", username);
+      formData.append("photo", pfp);
+
       setLoading(true);
       axios
         .post(`${baseURL}api/users/signup`, formData, {

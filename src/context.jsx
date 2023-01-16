@@ -14,7 +14,6 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     user ? setImage(user.picture.split("\\")[1]) : "";
   }, [user]);
-  console.log(user);
   return (
     <AppContext.Provider value={{ baseURL, user, setUser, image }}>
       {children}

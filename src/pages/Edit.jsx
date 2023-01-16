@@ -14,9 +14,13 @@ function Edit() {
   const [loading, setLoading] = useState(false);
   const [usernameUpdated, setUsernameUpdated] = useState();
   const [imageUpdated, setImageUpdated] = useState();
+  const [file, setFile] = useState();
+  const [fileUrl, setFileUrl] = useState("");
   const navigate = useNavigate();
-  const handleProfileUpdate = () => {
+  const photoURL = `${baseURL}images/${image}`;
+  const handleProfileUpdate = (e) => {
     setError("");
+    e.preventDefault();
     if (emailUpdated == user.email) {
       setError("Can't change the email to current one");
       return;
@@ -27,18 +31,19 @@ function Edit() {
     if (emailUpdated || usernameUpdated) {
       setLoading(true);
       setError(false);
-      const formData = {
-        usernameUpdated: usernameUpdated || user.username,
-        emailUpdated: emailUpdated || user.email,
-        id: user.id,
-      };
+      console.log(file);
+      const formData = new FormData();
+      formData.append("usernameUpdated", usernameUpdated || user.username);
+      formData.append("emailUpdated", emailUpdated || user.email);
+      formData.append("id", user.id);
+      formData.append("photo", file);
       axios
         .put(`${baseURL}api/users/edit`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
           console.log(usernameUpdated, emailUpdated);
-          console.log(res.data);
+          console.log(res.data, "aqvar");
           setLoading(false);
           setUser({
             email: res.data.email,
@@ -47,6 +52,8 @@ function Edit() {
             picture: user.picture,
             id: user.id,
           });
+          localStorage.setItem("user", JSON.stringify(user));
+          console.log(`${user.picture.split("\\")[1]}`);
           navigate("/");
         })
         .catch((error) => {
@@ -57,6 +64,15 @@ function Edit() {
       setError("Fill in all fields!");
     }
   };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      setFileUrl(e.target.result);
+    };
+  };
   return (
     <section
       style={{
@@ -66,7 +82,8 @@ function Edit() {
         height: "100%",
       }}
     >
-      <div
+      <form
+        onSubmit={(e) => handleProfileUpdate(e)}
         className="profilepage-container"
         style={{
           position: "relative",
@@ -81,15 +98,17 @@ function Edit() {
           <FaRegAddressCard className="edit-icon" />
         </Link>
         <div className="edit-image-cont">
-          <img src={`${baseURL}images/${image}`} className="profile-pfp" />
+          <img src={fileUrl || photoURL} className="profile-pfp" />
           <div htmlFor="update-image" className="edit-image-overlay">
             <label htmlFor="update-image">
               <SlPicture className="update-image-icon" />
               Upload
             </label>
             <input
+              onChange={(e) => handleFileChange(e)}
               id="update-image"
               style={{ display: "none" }}
+              name="profilePicture"
               type="file"
               accept="image/jpeg, image/png, image/jpg"
             />
@@ -112,11 +131,11 @@ function Edit() {
         {loading ? (
           <div className="loader"></div>
         ) : (
-          <button onClick={handleProfileUpdate} className="save-edits">
+          <button type={"submit"} className="save-edits">
             Save
           </button>
         )}
-      </div>
+      </form>
     </section>
   );
 }
