@@ -4,8 +4,44 @@ import { Link } from "react-router-dom";
 import { SlPicture } from "react-icons/sl";
 import { AiOutlineHome } from "react-icons/ai";
 import { useGlobalContext } from "../context";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function Edit() {
-  const { user, image, baseURL } = useGlobalContext();
+  const { user, image, baseURL, setUser } = useGlobalContext();
+  const [emailUpdated, setEmailUpdated] = useState();
+  const [usernameUpdated, setUsernameUpdated] = useState();
+  const [imageUpdated, setImageUpdated] = useState();
+  const navigate = useNavigate();
+  const handleProfileUpdate = () => {
+    if (emailUpdated || usernameUpdated) {
+      const formData = {
+        usernameUpdated: usernameUpdated || user.username,
+        emailUpdated: emailUpdated || user.email,
+        id: user.id,
+      };
+      axios
+        .put(`${baseURL}api/users/edit`, formData, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          console.log(usernameUpdated, emailUpdated);
+          console.log(res.data);
+          setUser({
+            email: res.data.email,
+            username: res.data.username,
+            token: user.token,
+            picture: user.picture,
+            id: user.id,
+          });
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(formData);
+          console.log(error);
+        });
+    }
+  };
   return (
     <section
       style={{
@@ -38,10 +74,22 @@ function Edit() {
           </div>
         </div>
         <div className="edit-input-cont">
-          <input type="text" placeholder={user.username} />
-          <input type="text" placeholder={user.email} />
+          <input
+            value={usernameUpdated}
+            onChange={(e) => setUsernameUpdated(e.target.value)}
+            type="text"
+            placeholder={user.username}
+          />
+          <input
+            value={emailUpdated}
+            onChange={(e) => setEmailUpdated(e.target.value)}
+            type="text"
+            placeholder={user.email}
+          />
         </div>
-        <button className="save-edits">Save</button>
+        <button onClick={handleProfileUpdate} className="save-edits">
+          Save
+        </button>
       </div>
     </section>
   );
