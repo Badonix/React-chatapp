@@ -1,6 +1,6 @@
 import React from "react";
 
-function SidebarFriends({ title, bio, pfp, active }) {
+function SidebarFriends({ title, email, pfp, active }) {
   return (
     <li className="sidebar-chat-user">
       <div className="chat--user-pfp-cont">
@@ -9,7 +9,7 @@ function SidebarFriends({ title, bio, pfp, active }) {
       </div>
       <div className="sidebar-chat-user-text">
         <h5>{title}</h5>
-        <p>{bio}</p>
+        <p>{email}</p>
       </div>
     </li>
   );

@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiUserAddLine } from "react-icons/ri";
 import SidebarFriends from "./SidebarFriends";
 import { GiHamburgerMenu } from "react-icons/gi";
+import axios from "axios";
+import { useGlobalContext } from "../context";
 function FriendSection({ setBurgerMenu }) {
+  const [people, setPeople] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { baseURL, user } = useGlobalContext();
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .post(
+        `${baseURL}api/users`,
+        { id: user.id },
+        { headers: "content-type: text/json" }
+      )
+      .then((res) => {
+        setPeople(res.data);
+        setLoading(false);
+      });
+  }, [user.id]);
   return (
     <section>
       <header>
@@ -23,103 +41,27 @@ function FriendSection({ setBurgerMenu }) {
         <input autoFocus={true} type="text" placeholder="Search Friends" />
       </form>
       <div className="sidebar-chats">
+        {loading && (
+          <div className="loading-cont">
+            <div className="load-1">
+              <div className="line"></div>
+              <div className="line"></div>
+              <div className="line"></div>
+            </div>
+          </div>
+        )}
         <ul>
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"Elon Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
-          <SidebarFriends
-            active={true}
-            bio={"Im Elon musk!"}
-            title={"z Musk"}
-            pfp={
-              "https://i.pinimg.com/474x/97/aa/84/97aa847d061a14894178805f1d551500.jpg"
-            }
-          />
+          {people.map((el) => {
+            return (
+              <SidebarFriends
+                key={el._id}
+                active={true}
+                email={el.email}
+                title={el.username}
+                pfp={`${baseURL}images/${el.picture.split("\\")[1]}`}
+              />
+            );
+          })}
         </ul>
       </div>
     </section>
