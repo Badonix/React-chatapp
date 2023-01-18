@@ -13,14 +13,14 @@ function FriendSection({ setBurgerMenu }) {
     axios
       .post(
         `${baseURL}api/users`,
-        { id: user.id },
+        { id: user?.id },
         { headers: "content-type: text/json" }
       )
       .then((res) => {
         setPeople(res.data);
         setLoading(false);
       });
-  }, [user.id]);
+  }, [user?.id]);
   return (
     <section>
       <header>
@@ -54,11 +54,11 @@ function FriendSection({ setBurgerMenu }) {
           {people.map((el) => {
             return (
               <SidebarFriends
-                key={el._id}
+                key={el?._id}
                 active={true}
-                email={el.email}
-                title={el.username}
-                pfp={`${baseURL}images/${el.picture.split("\\")[1]}`}
+                email={el?.email}
+                title={el?.username}
+                pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
               />
             );
           })}

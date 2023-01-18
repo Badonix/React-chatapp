@@ -39,6 +39,7 @@ function Sidebar({
       setBurgerMenu(false);
     }
   });
+  console.log(user);
   return (
     <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
       <div className="top-sidebar">
@@ -85,7 +86,7 @@ function Sidebar({
         <div className="navigation-icons">
           {dropDown && (
             <div className="profile-dropdown">
-              <Link to="/profile">
+              <Link to={`/profile/${user?.id}`}>
                 {" "}
                 <p>Profile</p>
               </Link>
@@ -102,7 +103,7 @@ function Sidebar({
           >
             <img
               className="nav-profile-image"
-              src={`${baseURL}images/${user.picture.split("\\")[1]}`}
+              src={`${baseURL}images/${user?.picture.split("\\")[1]}`}
             />
           </div>
         </div>

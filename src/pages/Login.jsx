@@ -21,8 +21,8 @@ function Login() {
       })
       .then((response) => {
         console.log(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
-        setUser(response.data);
+        localStorage.setItem("id", response.data.id);
+        localStorage.setItem("token", response.data.token);
         setLoading(false);
         navigate("/");
       })

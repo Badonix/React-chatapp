@@ -3,39 +3,41 @@ import "./App.css";
 import Profile from "./pages/Profile";
 import Messenger from "./pages/Messenger";
 import Signup from "./pages/Signup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
 import { useGlobalContext } from "./context";
 function App() {
   const { user, setUser, image } = useGlobalContext();
+  const [authenticated, setAuthenticated] = useState(false);
+
   useEffect(() => {
-    console.log(user);
-    console.log(image);
-  }, [user]);
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+    if (token && id) {
+      setAuthenticated(true);
+    }
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={user ? <Messenger /> : <Navigate to="/login" />}
+          element={authenticated ? <Messenger /> : <Navigate to="/login" />}
         />
         <Route
           path="/signup"
-          element={!user ? <Signup /> : <Navigate to="/" />}
+          element={!authenticated ? <Signup /> : <Navigate to="/" />}
         />
         <Route
           path="/login"
-          element={!user ? <Login /> : <Navigate to="/" />}
+          element={!authenticated ? <Login /> : <Navigate to="/" />}
         />
-        <Route
-          path="/profile"
-          element={user ? <Profile /> : <Navigate to="/login" />}
-        />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route
           path="/edit"
-          element={user ? <Edit /> : <Navigate to="/login" />}
+          element={authenticated ? <Edit /> : <Navigate to="/login" />}
         />
       </Routes>
     </BrowserRouter>
