@@ -706,8 +706,9 @@ form .button-div a:hover {
 }
 .edit-image-overlay {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  width: 150px;
+  height: 150px;
   background-color: rgba(0, 0, 0, 0.767);
   top: 0;
   border-radius: 50%;
@@ -863,4 +864,52 @@ form .button-div a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.follow-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.356);
+  border-radius: 5px;
+  border: none;
+  transition: 0.3s;
+  color: white;
+  background-color: var(--primary-active-blue);
+}
+.follow-btn:hover {
+  background-color: #066ddb;
+}
+.username-placeholder {
+  width: 200px;
+  height: 30px;
+  background-color: rgba(97, 97, 97, 0.281);
+  border-radius: 20px;
+  animation: infinite 2s loadingPlaceholder;
+}
+.email-placeholder {
+  width: 250px;
+  height: 30px;
+  background-color: rgba(97, 97, 97, 0.281);
+  border-radius: 20px;
+  animation: infinite 2s loadingPlaceholder;
+}
+
+.followers-placeholder {
+  width: 150px;
+  height: 20px;
+  background-color: rgba(97, 97, 97, 0.281);
+  border-radius: 20px;
+  animation: infinite 2s loadingPlaceholder;
+}
+@keyframes loadingPlaceholder {
+  50% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: rgba(97, 97, 97, 0.281);
+  }
 }

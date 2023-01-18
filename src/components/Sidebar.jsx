@@ -5,7 +5,7 @@ import img from "../images/logo.png";
 import { RiCloseFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import useClickOutside from "../hooks/useClickOutside";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 function Sidebar({
   currentSection,
@@ -25,7 +25,11 @@ function Sidebar({
   };
   const handleLogout = () => {
     setUser("");
-    localStorage.removeItem("user");
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    const navigate = useNavigate();
+
+    navigate("/login");
   };
   useEffect(() => {
     document.addEventListener("click", handleClick);
@@ -103,7 +107,7 @@ function Sidebar({
           >
             <img
               className="nav-profile-image"
-              src={`${baseURL}images/${user?.picture.split("\\")[1]}`}
+              src={`${baseURL}images/${user?.picture?.split("\\")[1]}`}
             />
           </div>
         </div>

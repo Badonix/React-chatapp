@@ -18,7 +18,7 @@ function App() {
     if (token && id) {
       setAuthenticated(true);
     }
-  }, []);
+  }, [user]);
   return (
     <BrowserRouter>
       <Routes>

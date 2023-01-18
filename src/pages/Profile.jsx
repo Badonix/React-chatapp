@@ -9,21 +9,28 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [otherUser, setOtherUser] = useState();
+  const [loading, setLoading] = useState(false);
   const { user, setUser, baseURL } = useGlobalContext();
   const [isCurrentUser, setIsCurrentUser] = useState(false);
+
   useEffect(() => {
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
-      axios
-        .get(`${baseURL}api/users/${localStorage.getItem("id")}`)
-        .then((res) => {
-          console.log(res.data);
-          setUser(res.data);
-        });
+      setLoading(true);
+      axios.get(`${baseURL}api/users/${id}`).then((res) => {
+        setOtherUser(res.data);
+        console.log(otherUser);
+        setLoading(false);
+      });
     }
     if (id == localStorage.getItem("id")) {
       setIsCurrentUser(true);
+      setUser(otherUser);
     }
   }, []);
+  useEffect(() => {
+    console.log(otherUser);
+  }, [otherUser]);
   return (
     <section
       style={{
@@ -37,19 +44,44 @@ function Profile() {
         <Link to="/">
           <AiOutlineHome className="go-back-icon" />
         </Link>
-        {isCurrentUser && (
+        {isCurrentUser && !loading ? (
           <Link to="/edit">
             <AiOutlineEdit className="edit-icon" />
           </Link>
+        ) : (
+          <button className="follow-btn">Follow</button>
         )}
 
         <img
-          src={`${baseURL}images/${user?.picture.split("\\")[1]}`}
+          src={
+            !loading
+              ? `${baseURL}images/${otherUser?.picture.split("\\")[1]}`
+              : "https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP-300x300.jpg"
+          }
           className="profile-pfp"
         />
-        <h2>{user?.username}</h2>
-        <h3>{user?.email}</h3>
-        <p>Friends: 19</p>
+        {!loading ? (
+          <>
+            <h2>{otherUser?.username}</h2>
+            <h3>{otherUser?.email}</h3>
+          </>
+        ) : (
+          <>
+            <div className="username-placeholder"></div>
+            <div className="email-placeholder"></div>
+          </>
+        )}
+        {loading ? (
+          <>
+            <p className="followers-placeholder"></p>
+            <p className="followers-placeholder"></p>
+          </>
+        ) : (
+          <>
+            <p>Followers: {otherUser?.followers}</p>
+            <p>Following: {otherUser?.following}</p>
+          </>
+        )}
       </div>
     </section>
   );

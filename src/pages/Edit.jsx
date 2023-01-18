@@ -5,19 +5,31 @@ import { SlPicture } from "react-icons/sl";
 import { AiOutlineHome } from "react-icons/ai";
 import { useGlobalContext } from "../context";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Edit() {
   const { user, image, baseURL, setUser } = useGlobalContext();
   const [emailUpdated, setEmailUpdated] = useState();
   const [Error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [usernameUpdated, setUsernameUpdated] = useState();
-  const [imageUpdated, setImageUpdated] = useState();
   const [file, setFile] = useState();
+  const [otherUser, setOtherUser] = useState();
   const [fileUrl, setFileUrl] = useState("");
   const navigate = useNavigate();
-  const photoURL = `${baseURL}images/${image}`;
+  useEffect(() => {
+    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+      setLoading(true);
+      axios
+        .get(`${baseURL}api/users/${localStorage.getItem("id")}`)
+        .then((res) => {
+          setOtherUser(res.data);
+          console.log(otherUser);
+          setLoading(false);
+        });
+    }
+  }, []);
   const handleProfileUpdate = (e) => {
     setError("");
     e.preventDefault();
@@ -91,7 +103,10 @@ function Edit() {
         </Link>
         <div className="edit-image-cont">
           <img
-            src={fileUrl || `${baseURL}images/${user.picture.split("\\")[1]}`}
+            src={
+              fileUrl ||
+              `${baseURL}images/${otherUser?.picture?.split("\\")[1]}`
+            }
             className="profile-pfp"
           />
           <div htmlFor="update-image" className="edit-image-overlay">
@@ -114,13 +129,13 @@ function Edit() {
             value={usernameUpdated}
             onChange={(e) => setUsernameUpdated(e.target.value)}
             type="text"
-            placeholder={user.username}
+            placeholder={otherUser?.username}
           />
           <input
             value={emailUpdated}
             onChange={(e) => setEmailUpdated(e.target.value)}
             type="text"
-            placeholder={user.email}
+            placeholder={otherUser?.email}
           />
         </div>
         {loading ? (

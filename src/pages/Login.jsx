@@ -23,6 +23,7 @@ function Login() {
         console.log(response.data);
         localStorage.setItem("id", response.data.id);
         localStorage.setItem("token", response.data.token);
+        setUser(response.data);
         setLoading(false);
         navigate("/");
       })
