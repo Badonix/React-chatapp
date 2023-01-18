@@ -46,8 +46,6 @@ function Edit() {
             picture: res.data.picture,
             id: user.id,
           });
-          localStorage.setItem("user", JSON.stringify(user));
-          console.log(`${user.picture.split("\\")[1]}`);
           navigate("/");
         })
         .catch((error) => {

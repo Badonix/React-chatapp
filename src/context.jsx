@@ -13,7 +13,6 @@ const AppProvider = ({ children }) => {
       axios
         .get(`${baseURL}api/users/${localStorage.getItem("id")}`)
         .then((res) => {
-          console.log(res.data);
           setUser(res.data);
         });
     } else {

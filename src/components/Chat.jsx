@@ -50,6 +50,12 @@ function Chat({ setBurgerMenu }) {
       </div>
       <div className="chat-body">
         <RecievedMessage />
+        <RecievedMessage />
+        <RecievedMessage />
+        <RecievedMessage />
+        <RecievedMessage />
+        <RecievedMessage />
+        <RecievedMessage />
         {messages.map((el) => {
           return <SentMessage message={el.message} />;
         })}

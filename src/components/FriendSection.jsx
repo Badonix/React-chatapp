@@ -21,6 +21,9 @@ function FriendSection({ setBurgerMenu }) {
         setLoading(false);
       });
   }, [user?.id]);
+  const handeFollow = (id) => {
+    console.log(`salam ${id}`);
+  };
   return (
     <section>
       <header>
@@ -28,7 +31,7 @@ function FriendSection({ setBurgerMenu }) {
           <div className="ghost"></div>
           <GiHamburgerMenu id="debug-id" className="burger" />
         </div>
-        <span>Friends</span>
+        <span>People</span>
         <ul>
           <li>
             <div>
@@ -38,7 +41,7 @@ function FriendSection({ setBurgerMenu }) {
         </ul>
       </header>
       <form>
-        <input autoFocus={true} type="text" placeholder="Search Friends" />
+        <input autoFocus={true} type="text" placeholder="Search People" />
       </form>
       <div className="sidebar-chats">
         {loading && (
@@ -54,6 +57,7 @@ function FriendSection({ setBurgerMenu }) {
           {people.map((el) => {
             return (
               <SidebarFriends
+                onClick={() => handeFollow(el._id)}
                 key={el?._id}
                 active={true}
                 email={el?.email}
