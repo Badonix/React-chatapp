@@ -913,3 +913,18 @@ form .button-div a:hover {
     background-color: rgba(97, 97, 97, 0.281);
   }
 }
+
+.unfollow-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.356);
+  border-radius: 5px;
+  border: none;
+  transition: 0.3s;
+  color: rgb(255, 255, 255);
+  background-color: var(--text-secondary-color);
+}

@@ -3,8 +3,10 @@ import { RiUserAddLine } from "react-icons/ri";
 import SidebarFriends from "./SidebarFriends";
 import { GiHamburgerMenu } from "react-icons/gi";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 function FriendSection({ setBurgerMenu }) {
+  const navigate = useNavigate();
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
   const { baseURL, user } = useGlobalContext();
@@ -21,8 +23,8 @@ function FriendSection({ setBurgerMenu }) {
         setLoading(false);
       });
   }, [user?.id]);
-  const handeFollow = (id) => {
-    console.log(`salam ${id}`);
+  const handleViewProfile = (id) => {
+    navigate(`/profile/${id}`);
   };
   return (
     <section>
@@ -57,7 +59,7 @@ function FriendSection({ setBurgerMenu }) {
           {people.map((el) => {
             return (
               <SidebarFriends
-                onClick={() => handeFollow(el._id)}
+                onClick={() => handleViewProfile(el._id)}
                 key={el?._id}
                 active={true}
                 email={el?.email}

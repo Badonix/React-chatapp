@@ -2,8 +2,11 @@ import React from "react";
 import SidebarChat from "./SidebarChat";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineGroupAdd } from "react-icons/md";
+import { useGlobalContext } from "../context";
 
 function ChatSection() {
+  const { user } = useGlobalContext();
+  console.log(user);
   return (
     <section className="chat-section">
       <header>

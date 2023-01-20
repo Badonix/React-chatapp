@@ -25,6 +25,7 @@ function Edit() {
         .get(`${baseURL}api/users/${localStorage.getItem("id")}`)
         .then((res) => {
           setOtherUser(res.data);
+          setUser(res.data);
           console.log(otherUser);
           setLoading(false);
         });

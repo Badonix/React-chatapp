@@ -13,24 +13,70 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const { user, setUser, baseURL } = useGlobalContext();
   const [isCurrentUser, setIsCurrentUser] = useState(false);
-
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [following, setFollowing] = useState();
+  const [followers, setFollowers] = useState();
   useEffect(() => {
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
       setLoading(true);
       axios.get(`${baseURL}api/users/${id}`).then((res) => {
         setOtherUser(res.data);
         console.log(otherUser);
+        setFollowing(res.data.following.length);
+        setFollowers(res.data.followers.length);
         setLoading(false);
+        if (res.data.followers.includes(localStorage.getItem("id"))) {
+          setIsFollowed(true);
+        } else {
+          setIsFollowed(false);
+        }
       });
     }
     if (id == localStorage.getItem("id")) {
       setIsCurrentUser(true);
-      setUser(otherUser);
     }
-  }, []);
-  useEffect(() => {
     console.log(otherUser);
-  }, [otherUser]);
+  }, []);
+
+  const handleFollow = (id) => {
+    if (isFollowed) return;
+    axios
+      .post(`${baseURL}api/users/follow`, {
+        userId: localStorage.getItem("id"),
+        followToId: id,
+      })
+      .then((res) => {
+        console.log(res);
+        const newOtherUser = Object.assign({}, otherUser, {
+          followers: otherUser.followers.concat(id),
+        });
+        setOtherUser(newOtherUser);
+        setFollowers((prev) => prev + 1);
+      });
+    setIsFollowed(true);
+  };
+
+  const handleUnFollow = (id) => {
+    axios
+      .post(`${baseURL}api/users/unfollow`, {
+        userId: localStorage.getItem("id"),
+        userToUnfollowId: id,
+      })
+      .then((res) => {
+        console.log(res);
+        setFollowers((prev) => prev - 1);
+
+        setOtherUser((prevState) => {
+          let obj = { ...prevState }; // create a copy of the object
+          let index = obj.followers.indexOf(id); // find the index of the id to remove
+          if (index !== -1) obj.followers.splice(index, 1); // remove the id if it exists in the array
+          setIsFollowed(false);
+          return obj;
+        });
+      });
+    console.log(otherUser);
+  };
+
   return (
     <section
       style={{
@@ -48,8 +94,20 @@ function Profile() {
           <Link to="/edit">
             <AiOutlineEdit className="edit-icon" />
           </Link>
+        ) : isFollowed ? (
+          <button
+            onClick={() => handleUnFollow(otherUser.id)}
+            className="unfollow-btn"
+          >
+            Unfollow
+          </button>
         ) : (
-          <button className="follow-btn">Follow</button>
+          <button
+            onClick={() => handleFollow(otherUser.id)}
+            className="follow-btn"
+          >
+            Follow
+          </button>
         )}
 
         <img
@@ -78,8 +136,8 @@ function Profile() {
           </>
         ) : (
           <>
-            <p>Followers: {otherUser?.followers}</p>
-            <p>Following: {otherUser?.following}</p>
+            <p>Followers: {followers}</p>
+            <p>Following: {following}</p>
           </>
         )}
       </div>

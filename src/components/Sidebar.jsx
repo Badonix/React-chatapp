@@ -28,10 +28,10 @@ function Sidebar({
     localStorage.removeItem("id");
     localStorage.removeItem("token");
     const navigate = useNavigate();
-
     navigate("/login");
   };
   useEffect(() => {
+    console.log(user);
     document.addEventListener("click", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
@@ -43,7 +43,6 @@ function Sidebar({
       setBurgerMenu(false);
     }
   });
-  console.log(user);
   return (
     <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
       <div className="top-sidebar">
@@ -107,7 +106,7 @@ function Sidebar({
           >
             <img
               className="nav-profile-image"
-              src={`${baseURL}images/${user?.picture?.split("\\")[1]}`}
+              src={`${baseURL}images/${user?.picture?.split("\\")[1]}` || ""}
             />
           </div>
         </div>

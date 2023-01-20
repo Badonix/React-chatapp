@@ -33,8 +33,8 @@ function Signup() {
         })
         .then((response) => {
           console.log(response.data);
-          localStorage.setItem("token", JSON.stringify(response.data.token));
-          localStorage.setItem("id", JSON.stringify(response.data._id));
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("id", response.data.id);
 
           setUser(response.data);
           setLoading(false);
