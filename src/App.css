@@ -9,11 +9,19 @@
 img {
   user-select: none;
 }
-
+:webkit-scrollbar {
+  width: 2px;
+  background-color: var(--primary);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--text-secondary-color);
+}
 * {
   margin: 0;
   font-family: sans-serif;
   padding: 0;
+  scroll-behavior: smooth;
 }
 html,
 body,
@@ -185,6 +193,7 @@ aside .top-sidebar .logo-container:hover {
   background-color: var(--primary);
   visibility: hidden;
 }
+
 .sidebar-chats::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: var(--text-secondary-color);
@@ -927,4 +936,79 @@ form .button-div a:hover {
   transition: 0.3s;
   color: rgb(255, 255, 255);
   background-color: var(--text-secondary-color);
+}
+
+.view-followers-cont {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+  background-color: #00000065;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.view-followers {
+  width: 90%;
+  max-width: 500px;
+  background-color: #ebebeb;
+  border-radius: 5px;
+  height: 80%;
+  max-height: 700px;
+  display: flex;
+  justify-content: baseline;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+}
+.top-row-followers {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.close-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+.followers-cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 50px;
+  overflow: auto;
+}
+.follower {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  transition: 0.3s;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.follower:hover {
+  background-color: #4f5a6a1c;
+}
+.follower img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.follower h2 {
+  font-size: 20px;
+  color: var(--text-secondary-color);
+}
+
+.followers-cont::-webkit-scrollbar {
+  width: 2px;
+  background-color: var(--text-main-color);
+}
+
+.followers-cont::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: white;
 }

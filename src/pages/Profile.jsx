@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useGlobalContext } from "../context";
 import { useNavigate } from "react-router-dom";
+import { GrClose } from "react-icons/gr";
+import Follower from "../components/Follower";
 function Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ function Profile() {
   const [isFollowed, setIsFollowed] = useState(false);
   const [following, setFollowing] = useState();
   const [followers, setFollowers] = useState();
+  const [toggleFollowers, setToggleFollowers] = useState(false);
   useEffect(() => {
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
       setLoading(true);
@@ -86,6 +89,40 @@ function Profile() {
         height: "100%",
       }}
     >
+      {toggleFollowers && (
+        <div className="view-followers-cont">
+          <div className="view-followers">
+            <div className="top-row-followers">
+              <div></div>
+              <h2>Followers</h2>
+              <GrClose
+                onClick={() => {
+                  setToggleFollowers(false);
+                }}
+                className="close-icon"
+              />
+            </div>
+            <div className="followers-cont">
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+              <Follower />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="profilepage-container">
         <Link to="/">
           <AiOutlineHome className="go-back-icon" />
@@ -136,8 +173,26 @@ function Profile() {
           </>
         ) : (
           <>
-            <p>Followers: {followers}</p>
-            <p>Following: {following}</p>
+            <p
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setToggleFollowers(true);
+              }}
+            >
+              Followers: {followers}
+            </p>
+            <p
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setToggleFollowers(true);
+              }}
+            >
+              Following: {following}
+            </p>
           </>
         )}
       </div>
