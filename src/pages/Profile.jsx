@@ -13,20 +13,22 @@ function Profile() {
   const navigate = useNavigate();
   const [otherUser, setOtherUser] = useState();
   const [loading, setLoading] = useState(false);
-  const { user, setUser, baseURL } = useGlobalContext();
+  const { baseURL } = useGlobalContext();
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
-  const [following, setFollowing] = useState();
-  const [followers, setFollowers] = useState();
+  const [followingCount, setFollowingCount] = useState();
+  const [followersCount, setFollowersCount] = useState();
   const [toggleFollowers, setToggleFollowers] = useState(false);
+  const [toggleFollowings, setToggleFollowings] = useState(false);
+  const [followers, setFollowers] = useState([]);
+  const [followings, setFollowings] = useState([]);
   useEffect(() => {
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
       setLoading(true);
       axios.get(`${baseURL}api/users/${id}`).then((res) => {
         setOtherUser(res.data);
-        console.log(otherUser);
-        setFollowing(res.data.following.length);
-        setFollowers(res.data.followers.length);
+        setFollowingCount(res.data.following.length);
+        setFollowersCount(res.data.followers.length);
         setLoading(false);
         if (res.data.followers.includes(localStorage.getItem("id"))) {
           setIsFollowed(true);
@@ -34,13 +36,21 @@ function Profile() {
           setIsFollowed(false);
         }
       });
+      //get followers
+      axios.post(`${baseURL}api/users/followers`, { id: id }).then((res) => {
+        setFollowers(res.data);
+        console.log(res.data);
+      });
+      axios.post(`${baseURL}api/users/followings`, { id: id }).then((res) => {
+        setFollowings(res.data);
+      });
     }
     if (id == localStorage.getItem("id")) {
       setIsCurrentUser(true);
+    } else {
+      setIsCurrentUser(false);
     }
-    console.log(otherUser);
-  }, []);
-
+  }, [id]);
   const handleFollow = (id) => {
     if (isFollowed) return;
     axios
@@ -49,12 +59,11 @@ function Profile() {
         followToId: id,
       })
       .then((res) => {
-        console.log(res);
         const newOtherUser = Object.assign({}, otherUser, {
           followers: otherUser.followers.concat(id),
         });
         setOtherUser(newOtherUser);
-        setFollowers((prev) => prev + 1);
+        setFollowersCount((prev) => prev + 1);
       });
     setIsFollowed(true);
   };
@@ -66,8 +75,7 @@ function Profile() {
         userToUnfollowId: id,
       })
       .then((res) => {
-        console.log(res);
-        setFollowers((prev) => prev - 1);
+        setFollowersCount((prev) => prev - 1);
 
         setOtherUser((prevState) => {
           let obj = { ...prevState }; // create a copy of the object
@@ -77,7 +85,6 @@ function Profile() {
           return obj;
         });
       });
-    console.log(otherUser);
   };
 
   return (
@@ -91,6 +98,10 @@ function Profile() {
     >
       {toggleFollowers && (
         <div className="view-followers-cont">
+          <div
+            onClick={() => setToggleFollowers(false)}
+            className="invis-prof"
+          ></div>
           <div className="view-followers">
             <div className="top-row-followers">
               <div></div>
@@ -103,22 +114,52 @@ function Profile() {
               />
             </div>
             <div className="followers-cont">
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
-              <Follower />
+              {followers.map((el) => {
+                return (
+                  <Follower
+                    setToggleFollowers={setToggleFollowers}
+                    setToggleFollowings={setToggleFollowings}
+                    username={el.username}
+                    picture={el.picture}
+                    mgId={el._id}
+                    key={el._id}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+      {toggleFollowings && (
+        <div className="view-followers-cont">
+          <div
+            onClick={() => setToggleFollowings(false)}
+            className="invis-prof"
+          ></div>
+          <div className="view-followers">
+            <div className="top-row-followers">
+              <div></div>
+              <h2>Followings</h2>
+              <GrClose
+                onClick={() => {
+                  setToggleFollowings(false);
+                }}
+                className="close-icon"
+              />
+            </div>
+            <div className="followers-cont">
+              {followings.map((el) => {
+                return (
+                  <Follower
+                    setToggleFollowers={setToggleFollowers}
+                    setToggleFollowings={setToggleFollowings}
+                    username={el.username}
+                    picture={el.picture}
+                    mgId={el._id}
+                    key={el._id}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -181,17 +222,17 @@ function Profile() {
                 setToggleFollowers(true);
               }}
             >
-              Followers: {followers}
+              Followers: {followersCount}
             </p>
             <p
               style={{
                 cursor: "pointer",
               }}
               onClick={() => {
-                setToggleFollowers(true);
+                setToggleFollowings(true);
               }}
             >
-              Following: {following}
+              Following: {followingCount}
             </p>
           </>
         )}

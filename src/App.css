@@ -1012,3 +1012,14 @@ form .button-div a:hover {
   border-radius: 10px;
   background-color: white;
 }
+
+.invis-prof {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  z-index: -1;
+}
+a {
+  text-decoration: none;
+}
