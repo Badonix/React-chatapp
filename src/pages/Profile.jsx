@@ -114,18 +114,24 @@ function Profile() {
               />
             </div>
             <div className="followers-cont">
-              {followers.map((el) => {
-                return (
-                  <Follower
-                    setToggleFollowers={setToggleFollowers}
-                    setToggleFollowings={setToggleFollowings}
-                    username={el.username}
-                    picture={el.picture}
-                    mgId={el._id}
-                    key={el._id}
-                  />
-                );
-              })}
+              {followers.length > 0 ? (
+                followers.map((el) => {
+                  return (
+                    <Follower
+                      setToggleFollowers={setToggleFollowers}
+                      setToggleFollowings={setToggleFollowings}
+                      username={el.username}
+                      picture={el.picture}
+                      mgId={el._id}
+                      key={el._id}
+                    />
+                  );
+                })
+              ) : (
+                <div>
+                  <h3>User has no followers :(</h3>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -148,18 +154,24 @@ function Profile() {
               />
             </div>
             <div className="followers-cont">
-              {followings.map((el) => {
-                return (
-                  <Follower
-                    setToggleFollowers={setToggleFollowers}
-                    setToggleFollowings={setToggleFollowings}
-                    username={el.username}
-                    picture={el.picture}
-                    mgId={el._id}
-                    key={el._id}
-                  />
-                );
-              })}
+              {followings.length > 0 ? (
+                followings.map((el) => {
+                  return (
+                    <Follower
+                      setToggleFollowers={setToggleFollowers}
+                      setToggleFollowings={setToggleFollowings}
+                      username={el.username}
+                      picture={el.picture}
+                      mgId={el._id}
+                      key={el._id}
+                    />
+                  );
+                })
+              ) : (
+                <div>
+                  <h3>User is not following anybody :(</h3>
+                </div>
+              )}
             </div>
           </div>
         </div>

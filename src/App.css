@@ -1023,3 +1023,11 @@ form .button-div a:hover {
 a {
   text-decoration: none;
 }
+
+.followers-cont h3 {
+  font-size: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
