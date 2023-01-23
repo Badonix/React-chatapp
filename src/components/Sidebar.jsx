@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import useClickOutside from "../hooks/useClickOutside";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
+import { RiNotification4Line } from "react-icons/ri";
+import Notification from "./Notification";
 function Sidebar({
   currentSection,
   setCurrentSection,
@@ -14,6 +16,7 @@ function Sidebar({
   burgerMenu,
 }) {
   const [dropDown, setDropDown] = useState(false);
+  const [notifShowing, setNotifShowing] = useState(false);
   const dropdownRef = useRef(null);
   const { user, setUser, image, baseURL } = useGlobalContext();
   const handleClick = (event) => {
@@ -44,74 +47,118 @@ function Sidebar({
     }
   });
   return (
-    <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
-      <div className="top-sidebar">
-        <div className="close-btn-cont">
-          <RiCloseFill
-            onClick={() => setBurgerMenu(false)}
-            className="close-btn"
-          />
-        </div>
-
-        <div className="logo-container">
-          <img src={img} />
-        </div>
-        <div className="navigation-icons">
-          <div
-            onClick={() => {
-              setCurrentSection("chat");
-              setBurgerMenu(false);
-            }}
-            className={
-              currentSection == "chat"
-                ? "new-notif nav-icon-cont active"
-                : "new-notif nav-icon-cont"
-            }
-          >
-            <BsChatSquare className="nav-icon" />
-          </div>
-          <div
-            onClick={() => {
-              setCurrentSection("friends");
-              setBurgerMenu(false);
-            }}
-            className={
-              currentSection != "chat"
-                ? "new-notif nav-icon-cont active"
-                : "new-notif nav-icon-cont"
-            }
-          >
-            <BsPerson className="nav-icon" />
-          </div>
-        </div>
-      </div>
-      <div className="bottom-sidebar">
-        <div className="navigation-icons">
-          {dropDown && (
-            <div className="profile-dropdown">
-              <Link to={`/profile/${user?.id}`}>
-                {" "}
-                <p>Profile</p>
-              </Link>
-              <div className="dropdown-line"></div>
-              <Link onClick={handleLogout}>
-                <p className="logout">Log out</p>
-              </Link>
-            </div>
-          )}
-          <div
-            ref={dropdownRef}
-            onClick={() => setDropDown((prev) => !prev)}
-            className="nav-icon-cont profile-cont"
-          >
-            <img
-              className="nav-profile-image"
-              src={`${baseURL}images/${user?.picture?.split("\\")[1]}` || ""}
+    <>
+      <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
+        <div className="top-sidebar">
+          <div className="close-btn-cont">
+            <RiCloseFill
+              onClick={() => setBurgerMenu(false)}
+              className="close-btn"
             />
           </div>
+
+          <div className="logo-container">
+            <img src={img} />
+          </div>
+          <div className="navigation-icons">
+            <div
+              onClick={() => {
+                setCurrentSection("chat");
+                setBurgerMenu(false);
+              }}
+              className={
+                currentSection == "chat"
+                  ? "new-notif nav-icon-cont active"
+                  : "new-notif nav-icon-cont"
+              }
+            >
+              <BsChatSquare className="nav-icon" />
+            </div>
+            <div
+              onClick={() => {
+                setCurrentSection("friends");
+                setBurgerMenu(false);
+              }}
+              className={
+                currentSection != "chat"
+                  ? "new-notif nav-icon-cont active"
+                  : "new-notif nav-icon-cont"
+              }
+            >
+              <BsPerson className="nav-icon" />
+            </div>
+            <div
+              onClick={() => setNotifShowing(true)}
+              className="nav-icon-cont"
+            >
+              <RiNotification4Line className="notification-icon" />
+            </div>
+          </div>
+          <div
+            className={
+              !notifShowing
+                ? "notification-cont"
+                : "notification-cont notif-activee"
+            }
+          >
+            <div className="not-top-row-cont">
+              <div></div>
+              <h2>Notifications</h2>
+              <RiCloseFill
+                onClick={() => setNotifShowing(false)}
+                className="close-btn"
+              />
+            </div>
+            <div className="notif-cont">
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+            </div>
+          </div>
         </div>
-      </div>
-    </aside>
+        <div className="bottom-sidebar">
+          <div className="navigation-icons">
+            {dropDown && (
+              <div className="profile-dropdown">
+                <Link to={`/profile/${user?.id}`}>
+                  {" "}
+                  <p>Profile</p>
+                </Link>
+                <div className="dropdown-line"></div>
+                <Link onClick={handleLogout}>
+                  <p className="logout">Log out</p>
+                </Link>
+              </div>
+            )}
+            <div
+              ref={dropdownRef}
+              onClick={() => setDropDown((prev) => !prev)}
+              className="nav-icon-cont profile-cont"
+            >
+              <img
+                className="nav-profile-image"
+                src={`${baseURL}images/${user?.picture?.split("\\")[1]}` || ""}
+              />
+            </div>
+          </div>
+        </div>
+      </aside>
+      {notifShowing && (
+        <div
+          onClick={() => setNotifShowing(false)}
+          className="notif-background-ghost"
+        ></div>
+      )}
+    </>
   );
 }
 
