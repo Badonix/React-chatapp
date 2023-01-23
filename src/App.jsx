@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
 import { useGlobalContext } from "./context";
+import { io } from "socket.io-client";
 function App() {
   const { user, setUser, image } = useGlobalContext();
   const [authenticated, setAuthenticated] = useState(false);
@@ -19,6 +20,12 @@ function App() {
       setAuthenticated(true);
     }
   }, [user]);
+  useEffect(() => {
+    const socket = io("ws://localhost:4000");
+    socket.on("hello from server", (...args) => {
+      console.log(args);
+    });
+  });
   return (
     <BrowserRouter>
       <Routes>
