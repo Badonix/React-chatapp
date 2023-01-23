@@ -9,6 +9,7 @@ function FriendSection({ setBurgerMenu }) {
   const navigate = useNavigate();
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [followers, setFollowers] = useState([]);
   const { baseURL, user } = useGlobalContext();
   useEffect(() => {
     setLoading(true);
@@ -20,6 +21,16 @@ function FriendSection({ setBurgerMenu }) {
       )
       .then((res) => {
         setPeople(res.data);
+        setLoading(false);
+      });
+    axios
+      .post(
+        `${baseURL}api/users/followers`,
+        { id: user?.id },
+        { headers: "content-type: text/json" }
+      )
+      .then((res) => {
+        setFollowers(res.data);
         setLoading(false);
       });
   }, [user?.id]);
@@ -55,19 +66,42 @@ function FriendSection({ setBurgerMenu }) {
             </div>
           </div>
         )}
+        {followers.length > 0 ? (
+          <div className="follower-people">
+            <h3>People you may know</h3>
+            {followers.map((el) => {
+              return (
+                <SidebarFriends
+                  onClick={() => handleViewProfile(el._id)}
+                  key={el?._id}
+                  active={true}
+                  email={el?.email}
+                  title={el?.username}
+                  pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          ""
+        )}
+
         <ul>
-          {people.map((el) => {
-            return (
-              <SidebarFriends
-                onClick={() => handleViewProfile(el._id)}
-                key={el?._id}
-                active={true}
-                email={el?.email}
-                title={el?.username}
-                pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
-              />
-            );
-          })}
+          <div className="all-people">
+            <h3>Random People</h3>
+            {people.map((el) => {
+              return (
+                <SidebarFriends
+                  onClick={() => handleViewProfile(el._id)}
+                  key={el?._id}
+                  active={true}
+                  email={el?.email}
+                  title={el?.username}
+                  pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
+                />
+              );
+            })}
+          </div>
         </ul>
       </div>
     </section>

@@ -1031,3 +1031,12 @@ a {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.follower-people h3,
+.all-people h3 {
+  color: var(--text-main-color);
+  margin: 0px 0px 10px 20px;
+}
+.all-people h3 {
+  margin-top: 20px;
+}
