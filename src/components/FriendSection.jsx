@@ -11,6 +11,8 @@ function FriendSection({ setBurgerMenu }) {
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
   const { baseURL, user } = useGlobalContext();
+  const [searchInput, setSearchInput] = useState("");
+  console.log(searchInput);
   useEffect(() => {
     setLoading(true);
     axios
@@ -54,7 +56,13 @@ function FriendSection({ setBurgerMenu }) {
         </ul>
       </header>
       <form>
-        <input autoFocus={true} type="text" placeholder="Search People" />
+        <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          autoFocus={true}
+          type="text"
+          placeholder="Search People"
+        />
       </form>
       <div className="sidebar-chats">
         {loading && (
@@ -66,7 +74,7 @@ function FriendSection({ setBurgerMenu }) {
             </div>
           </div>
         )}
-        {followers.length > 0 ? (
+        {followers.length > 0 && !searchInput ? (
           <div className="follower-people">
             <h3>People you may know</h3>
             {followers.map((el) => {
@@ -85,24 +93,48 @@ function FriendSection({ setBurgerMenu }) {
         ) : (
           ""
         )}
-
-        <ul>
-          <div className="all-people">
-            <h3>Random People</h3>
-            {people.map((el) => {
-              return (
-                <SidebarFriends
-                  onClick={() => handleViewProfile(el._id)}
-                  key={el?._id}
-                  active={true}
-                  email={el?.email}
-                  title={el?.username}
-                  pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
-                />
-              );
-            })}
-          </div>
-        </ul>
+        {!searchInput && (
+          <ul>
+            <div className="all-people">
+              <h3>Random People</h3>
+              {people.map((el) => {
+                return (
+                  <SidebarFriends
+                    onClick={() => handleViewProfile(el._id)}
+                    key={el?._id}
+                    active={true}
+                    email={el?.email}
+                    title={el?.username}
+                    pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
+                  />
+                );
+              })}
+            </div>
+          </ul>
+        )}
+        {searchInput && (
+          <ul>
+            <div className="all-people">
+              <h3>Random People</h3>
+              {people.map((el) => {
+                if (
+                  el.username.toLowerCase().includes(searchInput.toLowerCase())
+                ) {
+                  return (
+                    <SidebarFriends
+                      onClick={() => handleViewProfile(el._id)}
+                      key={el?._id}
+                      active={true}
+                      email={el?.email}
+                      title={el?.username}
+                      pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </ul>
+        )}
       </div>
     </section>
   );
