@@ -8,10 +8,12 @@ import { Navigate } from "react-router-dom";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
 import { useGlobalContext } from "./context";
+import Layout from "./pages/Layout";
 import { io } from "socket.io-client";
 function App() {
   const { user, setUser, image } = useGlobalContext();
   const [authenticated, setAuthenticated] = useState(false);
+  const [newFollower, setNewFollower] = useState("");
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,7 +32,7 @@ function App() {
       socket?.emit("new-user", id);
     }
     socket?.on("followNotif", (followerId) => {
-      console.log(followerId);
+      setNewFollower(followerId);
     });
   }, [socket]);
 
@@ -39,7 +41,16 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={authenticated ? <Messenger /> : <Navigate to="/login" />}
+          element={
+            authenticated ? (
+              <Messenger
+                setNewFollower={setNewFollower}
+                newFollower={newFollower}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/signup"
@@ -49,10 +60,25 @@ function App() {
           path="/login"
           element={!authenticated ? <Login /> : <Navigate to="/" />}
         />
-        <Route path="/profile/:id" element={<Profile socket={socket} />} />
+        <Route
+          path="/profile/:id"
+          element={
+            <Profile
+              setNewFollower={setNewFollower}
+              newFollower={newFollower}
+              socket={socket}
+            />
+          }
+        />
         <Route
           path="/edit"
-          element={authenticated ? <Edit /> : <Navigate to="/login" />}
+          element={
+            authenticated ? (
+              <Edit setNewFollower={setNewFollower} newFollower={newFollower} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </BrowserRouter>

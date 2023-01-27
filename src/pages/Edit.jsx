@@ -7,8 +7,8 @@ import { useGlobalContext } from "../context";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-function Edit() {
+import Layout from "./Layout";
+function Edit({ newFollower, setNewFollower }) {
   const { user, image, baseURL, setUser } = useGlobalContext();
   const [emailUpdated, setEmailUpdated] = useState();
   const [Error, setError] = useState("");
@@ -79,75 +79,79 @@ function Edit() {
     };
   };
   return (
-    <section
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <form
-        onSubmit={(e) => handleProfileUpdate(e)}
-        className="profilepage-container"
+    <>
+      <Layout setNewFollower={setNewFollower} newFollower={newFollower} />
+
+      <section
         style={{
-          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
         }}
       >
-        <div className={Error ? "error-cont on" : "error-cont"}>{Error}</div>
+        <form
+          onSubmit={(e) => handleProfileUpdate(e)}
+          className="profilepage-container"
+          style={{
+            position: "relative",
+          }}
+        >
+          <div className={Error ? "error-cont on" : "error-cont"}>{Error}</div>
 
-        <Link to="/">
-          <AiOutlineHome className="go-back-icon" />
-        </Link>
-        <Link to="/profile">
-          <FaRegAddressCard className="edit-icon" />
-        </Link>
-        <div className="edit-image-cont">
-          <img
-            src={
-              fileUrl ||
-              `${baseURL}images/${otherUser?.picture?.split("\\")[1]}`
-            }
-            className="profile-pfp"
-          />
-          <div htmlFor="update-image" className="edit-image-overlay">
-            <label htmlFor="update-image">
-              <SlPicture className="update-image-icon" />
-              Upload
-            </label>
+          <Link to="/">
+            <AiOutlineHome className="go-back-icon" />
+          </Link>
+          <Link to="/profile">
+            <FaRegAddressCard className="edit-icon" />
+          </Link>
+          <div className="edit-image-cont">
+            <img
+              src={
+                fileUrl ||
+                `${baseURL}images/${otherUser?.picture?.split("\\")[1]}`
+              }
+              className="profile-pfp"
+            />
+            <div htmlFor="update-image" className="edit-image-overlay">
+              <label htmlFor="update-image">
+                <SlPicture className="update-image-icon" />
+                Upload
+              </label>
+              <input
+                onChange={(e) => handleFileChange(e)}
+                id="update-image"
+                style={{ display: "none" }}
+                name="profilePicture"
+                type="file"
+                accept="image/jpeg, image/png, image/jpg"
+              />
+            </div>
+          </div>
+          <div className="edit-input-cont">
             <input
-              onChange={(e) => handleFileChange(e)}
-              id="update-image"
-              style={{ display: "none" }}
-              name="profilePicture"
-              type="file"
-              accept="image/jpeg, image/png, image/jpg"
+              value={usernameUpdated}
+              onChange={(e) => setUsernameUpdated(e.target.value)}
+              type="text"
+              placeholder={otherUser?.username}
+            />
+            <input
+              value={emailUpdated}
+              onChange={(e) => setEmailUpdated(e.target.value)}
+              type="text"
+              placeholder={otherUser?.email}
             />
           </div>
-        </div>
-        <div className="edit-input-cont">
-          <input
-            value={usernameUpdated}
-            onChange={(e) => setUsernameUpdated(e.target.value)}
-            type="text"
-            placeholder={otherUser?.username}
-          />
-          <input
-            value={emailUpdated}
-            onChange={(e) => setEmailUpdated(e.target.value)}
-            type="text"
-            placeholder={otherUser?.email}
-          />
-        </div>
-        {loading ? (
-          <div className="loader"></div>
-        ) : (
-          <button type={"submit"} className="save-edits">
-            Save
-          </button>
-        )}
-      </form>
-    </section>
+          {loading ? (
+            <div className="loader"></div>
+          ) : (
+            <button type={"submit"} className="save-edits">
+              Save
+            </button>
+          )}
+        </form>
+      </section>
+    </>
   );
 }
 
