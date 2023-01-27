@@ -8,7 +8,7 @@ import { useGlobalContext } from "../context";
 import { useNavigate } from "react-router-dom";
 import { GrClose } from "react-icons/gr";
 import Follower from "../components/Follower";
-function Profile() {
+function Profile({ socket }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [otherUser, setOtherUser] = useState();
@@ -51,6 +51,7 @@ function Profile() {
       setIsCurrentUser(false);
     }
   }, [id]);
+
   const handleFollow = (id) => {
     if (isFollowed) return;
     axios
@@ -64,6 +65,10 @@ function Profile() {
         });
         setOtherUser(newOtherUser);
         setFollowersCount((prev) => prev + 1);
+        socket.emit("followUser", {
+          followToId: id,
+          followerId: localStorage.getItem("id"),
+        });
       });
     setIsFollowed(true);
   };

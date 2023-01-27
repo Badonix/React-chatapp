@@ -12,7 +12,7 @@ import { io } from "socket.io-client";
 function App() {
   const { user, setUser, image } = useGlobalContext();
   const [authenticated, setAuthenticated] = useState(false);
-
+  const [socket, setSocket] = useState(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
@@ -21,11 +21,19 @@ function App() {
     }
   }, [user]);
   useEffect(() => {
-    const socket = io("ws://localhost:4000");
-    socket.on("hello from server", (...args) => {
-      console.log(args);
+    setSocket(io("http://localhost:4000"));
+  }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+    if (token && id) {
+      socket?.emit("new-user", id);
+    }
+    socket?.on("followNotif", (followerId) => {
+      console.log(followerId);
     });
-  });
+  }, [socket]);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,7 +49,7 @@ function App() {
           path="/login"
           element={!authenticated ? <Login /> : <Navigate to="/" />}
         />
-        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile socket={socket} />} />
         <Route
           path="/edit"
           element={authenticated ? <Edit /> : <Navigate to="/login" />}
