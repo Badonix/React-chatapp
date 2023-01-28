@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import { RiNotification4Line } from "react-icons/ri";
 import Notification from "./Notification";
+import axios from "axios";
 function Sidebar({
   currentSection,
   setCurrentSection,
@@ -18,6 +19,7 @@ function Sidebar({
   const [dropDown, setDropDown] = useState(false);
   const [notifShowing, setNotifShowing] = useState(false);
   const dropdownRef = useRef(null);
+  const [notifications, setNotifications] = useState([]);
   const { user, setUser, image, baseURL } = useGlobalContext();
   const handleClick = (event) => {
     if (!dropDown) {
@@ -36,10 +38,17 @@ function Sidebar({
   useEffect(() => {
     console.log(user);
     document.addEventListener("click", handleClick);
+    axios
+      .get(`${baseURL}api/users/notifs/${localStorage.getItem("id")}`)
+      .then((res) => setNotifications([res.data]))
+      .catch((e) => console.log(e));
     return () => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+  useEffect(() => {
+    console.log(notifications);
+  }, [notifications]);
   const ref = useRef(null);
   useClickOutside(ref, () => {
     if (burgerMenu) {
@@ -110,18 +119,22 @@ function Sidebar({
               />
             </div>
             <div className="notif-cont">
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
-              <Notification />
+              {notifications[0]?.length ? (
+                notifications[0]?.map((el) => {
+                  return (
+                    <Notification
+                      picture={el?.picture}
+                      senderId={el?.senderId}
+                      username={el?.username}
+                    />
+                  );
+                })
+              ) : (
+                <div className="empty-notifs">
+                  <p>You have no notifications :(</p>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Searchtool_right.svg/1200px-Searchtool_right.svg.png" />
+                </div>
+              )}
             </div>
           </div>
         </div>

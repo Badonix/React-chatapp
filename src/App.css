@@ -1051,7 +1051,6 @@ a {
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.438);
   transition: 0.3s;
   scale: 0;
-  transition: 2s;
 }
 .not-top-row-cont {
   display: flex;
@@ -1132,7 +1131,7 @@ a {
   gap: 20px;
   border-radius: 5px;
   font-size: 18px;
-  animation: slide ease-out 1s;
+  animation: slide ease-out 2s;
 }
 .notif-popup img {
   width: 40px;
@@ -1147,9 +1146,27 @@ a {
 
 @keyframes slide {
   0% {
-    transform: translateX(1500px);
+    transform: translateX(2000px);
   }
   100% {
     transform: translateX(0);
   }
+}
+
+.empty-notifs {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-direction: column;
+}
+.empty-notifs p {
+  color: var(--text-main-color);
+  font-size: 25px;
+}
+.empty-notifs img {
+  width: 100px;
+  height: 100px;
 }
