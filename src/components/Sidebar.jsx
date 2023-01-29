@@ -123,6 +123,7 @@ function Sidebar({
                 notifications[0]?.map((el) => {
                   return (
                     <Notification
+                      time={el?.updatedAt}
                       picture={el?.picture}
                       senderId={el?.senderId}
                       username={el?.username}

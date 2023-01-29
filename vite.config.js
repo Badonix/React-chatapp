@@ -7,4 +7,7 @@ export default defineConfig({
   commonjsOptions: {
     esmExternals: true,
   },
+  server: {
+    host: true,
+  },
 });

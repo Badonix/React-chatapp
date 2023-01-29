@@ -1077,10 +1077,18 @@ a {
   align-items: center;
   padding: 15px;
   border: 1px solid red;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 10px;
   cursor: pointer;
   transition: 0.3s;
   border: 1px solid #293145;
+}
+
+.left-notif-cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .notification p {
   color: var(--text-main-color);
@@ -1169,4 +1177,9 @@ a {
 .empty-notifs img {
   width: 100px;
   height: 100px;
+}
+
+.date {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.295) !important;
 }
