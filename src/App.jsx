@@ -11,7 +11,7 @@ import { useGlobalContext } from "./context";
 import Layout from "./pages/Layout";
 import { io } from "socket.io-client";
 function App() {
-  const { user, setUser, image } = useGlobalContext();
+  const { user, setUser, image, setOnlineUsers } = useGlobalContext();
   const [authenticated, setAuthenticated] = useState(false);
   const [newFollower, setNewFollower] = useState("");
   const [socket, setSocket] = useState(null);
@@ -33,6 +33,9 @@ function App() {
     }
     socket?.on("followNotif", (followerId) => {
       setNewFollower(followerId);
+    });
+    socket?.on("online-users", (onlineUsers) => {
+      setOnlineUsers(onlineUsers);
     });
   }, [socket]);
 

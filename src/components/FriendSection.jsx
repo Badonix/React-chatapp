@@ -10,7 +10,7 @@ function FriendSection({ setBurgerMenu }) {
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
-  const { baseURL, user } = useGlobalContext();
+  const { baseURL, user, onlineUsers } = useGlobalContext();
   const [searchInput, setSearchInput] = useState("");
   console.log(searchInput);
   useEffect(() => {
@@ -82,7 +82,7 @@ function FriendSection({ setBurgerMenu }) {
                 <SidebarFriends
                   onClick={() => handleViewProfile(el._id)}
                   key={el?._id}
-                  active={true}
+                  active={onlineUsers.includes(el?._id)}
                   email={el?.email}
                   title={el?.username}
                   pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
@@ -102,7 +102,7 @@ function FriendSection({ setBurgerMenu }) {
                   <SidebarFriends
                     onClick={() => handleViewProfile(el._id)}
                     key={el?._id}
-                    active={true}
+                    active={onlineUsers.includes(el?._id)}
                     email={el?.email}
                     title={el?.username}
                     pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
