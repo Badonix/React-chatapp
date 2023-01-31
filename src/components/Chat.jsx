@@ -15,19 +15,18 @@ function Chat({ setBurgerMenu, socket }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    const handleSendMessage = () => {
-      if (inputValue) {
-        setMessages((prev) => [...prev, { message: inputValue }]);
-        socket.emit("new-message", {
-          sender: localStorage.getItem("id"),
-          receiver: currentChat,
-          content: inputValue,
-        });
-        setInputValue("");
-      }
-    };
-  }, [socket]);
+  var handleSendMessage = () => {
+    if (inputValue) {
+      console.log("aqvar");
+      setMessages((prev) => [...prev, { message: inputValue }]);
+      socket.emit("new-message", {
+        sender: localStorage.getItem("id"),
+        receiver: currentChat,
+        content: inputValue,
+      });
+      setInputValue("");
+    }
+  };
 
   useEffect(() => {
     const el = document.querySelector(".chat-body");
@@ -40,6 +39,11 @@ function Chat({ setBurgerMenu, socket }) {
     if (event.keyCode === 13) {
       if (inputValue) {
         setMessages((prev) => [...prev, { message: inputValue }]);
+        socket.emit("new-message", {
+          sender: localStorage.getItem("id"),
+          receiver: currentChat,
+          content: inputValue,
+        });
         setInputValue("");
       }
     }
