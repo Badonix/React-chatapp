@@ -47,6 +47,7 @@ function App() {
           element={
             authenticated ? (
               <Messenger
+                socket={socket}
                 setNewFollower={setNewFollower}
                 newFollower={newFollower}
               />

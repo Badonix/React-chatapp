@@ -36,7 +36,6 @@ function Sidebar({
     navigate("/login");
   };
   useEffect(() => {
-    console.log(user);
     document.addEventListener("click", handleClick);
     axios
       .get(`${baseURL}api/users/notifs/${localStorage.getItem("id")}`)
@@ -46,9 +45,7 @@ function Sidebar({
       document.removeEventListener("click", handleClick);
     };
   }, []);
-  useEffect(() => {
-    console.log(notifications);
-  }, [notifications]);
+
   const ref = useRef(null);
   useClickOutside(ref, () => {
     if (burgerMenu) {

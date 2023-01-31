@@ -40,7 +40,6 @@ function Profile({ socket, newFollower, setNewFollower }) {
       //get followers
       axios.post(`${baseURL}api/users/followers`, { id: id }).then((res) => {
         setFollowers(res.data);
-        console.log(res.data);
       });
       axios.post(`${baseURL}api/users/followings`, { id: id }).then((res) => {
         setFollowings(res.data);

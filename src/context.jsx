@@ -7,7 +7,10 @@ const AppProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [image, setImage] = useState();
   const [currentChat, setCurrentChat] = useState();
+  const [currentImg, setCurrentImg] = useState();
+  const [currentName, setCurrentName] = useState();
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [following, setFollowing] = useState([]);
   const baseURL = "http://localhost:4000/";
   useEffect(() => {
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
@@ -16,13 +19,18 @@ const AppProvider = ({ children }) => {
         .then((res) => {
           setUser(res.data);
         });
+      axios
+        .post(`${baseURL}api/users/followings`, {
+          id: localStorage.getItem("id"),
+        })
+        .then((res) => setFollowing(res.data))
+        .catch((error) => console.log(error.message));
     } else {
     }
   }, []);
   useEffect(() => {
-    console.log(onlineUsers);
-  }, [onlineUsers]);
-
+    console.log(currentChat, currentImg, currentName);
+  }, [currentChat, currentImg, currentName]);
   return (
     <AppContext.Provider
       value={{
@@ -30,9 +38,14 @@ const AppProvider = ({ children }) => {
         onlineUsers,
         setOnlineUsers,
         setCurrentChat,
+        setCurrentImg,
+        currentImg,
+        setCurrentName,
+        currentName,
         baseURL,
         user,
         setUser,
+        following,
         image,
       }}
     >

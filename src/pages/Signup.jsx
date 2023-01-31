@@ -19,7 +19,6 @@ function Signup() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (confirmPassword == password && pfp) {
-      console.log(confirmPassword, password, pfp, email, username);
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
@@ -32,7 +31,6 @@ function Signup() {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
-          console.log(response.data);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("id", response.data.id);
 
@@ -57,7 +55,6 @@ function Signup() {
       setPfpurl(e.target.result);
     };
   };
-  // console.log(pfp);
   return (
     <form onSubmit={handleFormSubmit} className="user-form">
       <div className="form-container">

@@ -12,7 +12,6 @@ function FriendSection({ setBurgerMenu }) {
   const [followers, setFollowers] = useState([]);
   const { baseURL, user, onlineUsers } = useGlobalContext();
   const [searchInput, setSearchInput] = useState("");
-  console.log(searchInput);
   useEffect(() => {
     setLoading(true);
     axios

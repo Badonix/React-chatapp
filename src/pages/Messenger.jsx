@@ -5,7 +5,7 @@ import { useState } from "react";
 import ChatSection from "../components/ChatSection";
 import Chat from "../components/Chat";
 import Layout from "./Layout";
-function Messenger({ newFollower, setNewFollower }) {
+function Messenger({ newFollower, setNewFollower, socket }) {
   const [currentSection, setCurrentSection] = useState("chat");
   const [burgerMenu, setBurgerMenu] = useState(false);
 
@@ -28,7 +28,7 @@ function Messenger({ newFollower, setNewFollower }) {
           />
         )}
         <main>
-          <Chat setBurgerMenu={setBurgerMenu} />
+          <Chat socket={socket} setBurgerMenu={setBurgerMenu} />
         </main>
       </div>
     </>

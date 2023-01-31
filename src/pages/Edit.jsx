@@ -26,7 +26,6 @@ function Edit({ newFollower, setNewFollower }) {
         .then((res) => {
           setOtherUser(res.data);
           setUser(res.data);
-          console.log(otherUser);
           setLoading(false);
         });
     }
@@ -38,7 +37,6 @@ function Edit({ newFollower, setNewFollower }) {
     if (emailUpdated || usernameUpdated || file) {
       setLoading(true);
       setError(false);
-      console.log(file);
       const formData = new FormData();
       formData.append("usernameUpdated", usernameUpdated || user.username);
       formData.append("emailUpdated", emailUpdated || user.email);
@@ -49,8 +47,6 @@ function Edit({ newFollower, setNewFollower }) {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
-          console.log(usernameUpdated, emailUpdated);
-          console.log(res.data, "aqvar");
           setLoading(false);
           setUser({
             email: res.data.email,

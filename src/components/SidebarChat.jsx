@@ -1,8 +1,27 @@
 import React from "react";
-
-function SidebarChat({ title, message, pfp, date, active }) {
+import { useGlobalContext } from "../context";
+function SidebarChat({
+  title,
+  uid,
+  setCurrentChat,
+  message,
+  pfp,
+  pic,
+  date,
+  active,
+  name,
+}) {
+  const { setCurrentImg, setCurrentName } = useGlobalContext();
+  const handleChatChange = (uid, img, name) => {
+    setCurrentChat(uid);
+    setCurrentImg(img);
+    setCurrentName(name);
+  };
   return (
-    <li className="sidebar-chat-user">
+    <li
+      onClick={() => handleChatChange(uid, pic, name)}
+      className="sidebar-chat-user"
+    >
       <div className="chat--user-pfp-cont">
         <img className="sidebar-chat-user-pfp" src={pfp} />
         {active && <div className="active-user"></div>}
