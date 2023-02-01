@@ -73,7 +73,7 @@ function Sidebar({
                 setBurgerMenu(false);
               }}
               className={
-                currentSection == "chat"
+                currentSection == "chat" || !currentSection
                   ? "new-notif nav-icon-cont active"
                   : "new-notif nav-icon-cont"
               }
@@ -86,7 +86,7 @@ function Sidebar({
                 setBurgerMenu(false);
               }}
               className={
-                currentSection != "chat"
+                currentSection == "friends"
                   ? "new-notif nav-icon-cont active"
                   : "new-notif nav-icon-cont"
               }

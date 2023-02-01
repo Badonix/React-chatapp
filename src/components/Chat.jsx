@@ -19,7 +19,11 @@ function Chat({ setBurgerMenu, socket }) {
     if (inputValue) {
       const newMessages = [
         ...messages,
-        { content: inputValue, sender: localStorage.getItem("id") },
+        {
+          content: inputValue,
+          receiver: currentChat,
+          sender: localStorage.getItem("id"),
+        },
       ];
       setMessages(newMessages);
 
@@ -54,7 +58,11 @@ function Chat({ setBurgerMenu, socket }) {
       if (inputValue) {
         const newMessages = [
           ...messages,
-          { content: inputValue, sender: localStorage.getItem("id") },
+          {
+            content: inputValue,
+            receiver: currentChat,
+            sender: localStorage.getItem("id"),
+          },
         ];
         console.log(messages);
         setMessages(newMessages);
@@ -86,10 +94,19 @@ function Chat({ setBurgerMenu, socket }) {
       </div>
       <div className="chat-body">
         {messages.map((el, index) => {
-          if (el.sender == localStorage.getItem("id")) {
+          if (
+            el.sender == localStorage.getItem("id") &&
+            el.receiver == currentChat
+          ) {
             return <SentMessage key={index} message={el.content} />;
-          } else {
-            return <RecievedMessage key={index} message={el.content} />;
+          } else if (el.sender == currentChat) {
+            return (
+              <RecievedMessage
+                photo={currentImg}
+                key={index}
+                message={el.content}
+              />
+            );
           }
         })}
 

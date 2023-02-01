@@ -20,12 +20,18 @@ function Messenger({ newFollower, setNewFollower, socket }) {
           setBurgerMenu={setBurgerMenu}
         />
         {currentSection == "chat" ? (
-          <ChatSection className="chat-section" />
-        ) : (
+          <ChatSection
+            setCurrentSection={setCurrentSection}
+            setBurgerMenu={setBurgerMenu}
+            className="chat-section"
+          />
+        ) : currentSection == "friends" ? (
           <FriendSection
             setBurgerMenu={setBurgerMenu}
             className="friend-section"
           />
+        ) : (
+          ""
         )}
         <main>
           <Chat socket={socket} setBurgerMenu={setBurgerMenu} />

@@ -537,10 +537,7 @@ main {
     color: white;
     font-size: 25px;
   }
-  .chat-section,
-  .friend-section {
-    display: none !important;
-  }
+
   .sidebar {
     position: absolute;
     left: -200px;

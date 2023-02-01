@@ -10,6 +10,7 @@ function SidebarChat({
   date,
   active,
   name,
+  setCurrentSection,
 }) {
   const { setCurrentImg, setCurrentName } = useGlobalContext();
   const handleChatChange = (uid, img, name) => {
@@ -19,7 +20,10 @@ function SidebarChat({
   };
   return (
     <li
-      onClick={() => handleChatChange(uid, pic, name)}
+      onClick={() => {
+        handleChatChange(uid, pic, name);
+        setCurrentSection("");
+      }}
       className="sidebar-chat-user"
     >
       <div className="chat--user-pfp-cont">

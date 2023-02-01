@@ -4,16 +4,18 @@ import SidebarChat from "./SidebarChat";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { useGlobalContext } from "../context";
+import { GiHamburgerMenu } from "react-icons/gi";
 
-function ChatSection() {
+function ChatSection({ setCurrentSection, setBurgerMenu }) {
   const { user, baseURL, following, setCurrentChat, onlineUsers } =
     useGlobalContext();
-  useEffect(() => {
-    console.log(following);
-  }, [following]);
   return (
     <section className="chat-section">
       <header>
+        <div className="chat-burger-cont" onClick={() => setBurgerMenu(true)}>
+          <div className="ghost"></div>
+          <GiHamburgerMenu id="debug-id" className="burger" />
+        </div>
         <span>Chats</span>
         <ul>
           <li>
@@ -37,6 +39,7 @@ function ChatSection() {
             return (
               <SidebarChat
                 pic={el.picture}
+                setCurrentSection={setCurrentSection}
                 name={el.username}
                 uid={el._id}
                 setCurrentChat={setCurrentChat}

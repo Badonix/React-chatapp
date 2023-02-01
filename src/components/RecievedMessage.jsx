@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-
-function RecievedMessage({ message }) {
+import { useGlobalContext } from "../context";
+function RecievedMessage({ message, photo }) {
   const [show, setShow] = useState(false);
-
+  const { baseURL } = useGlobalContext();
   const handleShowDate = () => {
     setShow((prev) => !prev);
     setTimeout(() => {
@@ -12,10 +12,7 @@ function RecievedMessage({ message }) {
   };
   return (
     <div className="recieved-message">
-      <img
-        src="https://i.pinimg.com/736x/13/0f/96/130f9601ce0b948996e13bc2b1d88a66.jpg"
-        className="recieved-pfp"
-      />
+      <img src={`${baseURL}${photo}`} className="recieved-pfp" />
       <div onClick={handleShowDate} className="recieved-message-cont">
         <p>{message}</p>
         <span
