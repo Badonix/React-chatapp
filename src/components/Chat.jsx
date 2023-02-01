@@ -17,8 +17,12 @@ function Chat({ setBurgerMenu, socket }) {
 
   var handleSendMessage = () => {
     if (inputValue) {
-      console.log("aqvar");
-      setMessages((prev) => [...prev, { message: inputValue }]);
+      const newMessages = [
+        ...messages,
+        { content: inputValue, sender: localStorage.getItem("id") },
+      ];
+      setMessages(newMessages);
+
       socket.emit("new-message", {
         sender: localStorage.getItem("id"),
         receiver: currentChat,
@@ -33,12 +37,27 @@ function Chat({ setBurgerMenu, socket }) {
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
+    console.log(messages);
   }, [messages]);
+  useEffect(() => {
+    socket.on("recieve-message", (data) => {
+      // console.log(data);
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
+    return () => {
+      socket.off("recieve-message");
+    };
+  }, [socket]);
 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       if (inputValue) {
-        setMessages((prev) => [...prev, { message: inputValue }]);
+        const newMessages = [
+          ...messages,
+          { content: inputValue, sender: localStorage.getItem("id") },
+        ];
+        console.log(messages);
+        setMessages(newMessages);
         socket.emit("new-message", {
           sender: localStorage.getItem("id"),
           receiver: currentChat,
@@ -66,9 +85,14 @@ function Chat({ setBurgerMenu, socket }) {
         </Link>
       </div>
       <div className="chat-body">
-        {messages.map((el) => {
-          return <SentMessage message={el.message} />;
+        {messages.map((el, index) => {
+          if (el.sender == localStorage.getItem("id")) {
+            return <SentMessage key={index} message={el.content} />;
+          } else {
+            return <RecievedMessage key={index} message={el.content} />;
+          }
         })}
+
         <div className="dummy"></div>
       </div>
       <div className="chat-footer">

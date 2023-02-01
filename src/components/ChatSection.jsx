@@ -6,7 +6,8 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 import { useGlobalContext } from "../context";
 
 function ChatSection() {
-  const { user, baseURL, following, setCurrentChat } = useGlobalContext();
+  const { user, baseURL, following, setCurrentChat, onlineUsers } =
+    useGlobalContext();
   useEffect(() => {
     console.log(following);
   }, [following]);
@@ -39,7 +40,7 @@ function ChatSection() {
                 name={el.username}
                 uid={el._id}
                 setCurrentChat={setCurrentChat}
-                active={false}
+                active={onlineUsers.includes(el._id)}
                 title={el.username}
                 message="Hello, how are you?"
                 pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}

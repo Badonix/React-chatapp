@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function RecievedMessage() {
+function RecievedMessage({ message }) {
   const [show, setShow] = useState(false);
 
   const handleShowDate = () => {
@@ -17,12 +17,7 @@ function RecievedMessage() {
         className="recieved-pfp"
       />
       <div onClick={handleShowDate} className="recieved-message-cont">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam quod
-          ipsa dolorem officia, provident, quaerat odio perspiciatis eum
-          voluptate maxime aut ea modi magni? Reiciendis odit pariatur dolorum
-          qui incidunt.
-        </p>
+        <p>{message}</p>
         <span
           className={show ? "recieved-date show-recieved" : "recieved-date"}
         >
