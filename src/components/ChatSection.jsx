@@ -7,8 +7,9 @@ import { useGlobalContext } from "../context";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function ChatSection({ setCurrentSection, setBurgerMenu }) {
-  const { user, baseURL, following, setCurrentChat, onlineUsers } =
+  const { user, baseURL, currentChat, following, setCurrentChat, onlineUsers } =
     useGlobalContext();
+
   return (
     <section className="chat-section">
       <header>
@@ -38,8 +39,9 @@ function ChatSection({ setCurrentSection, setBurgerMenu }) {
           {following.map((el) => {
             return (
               <SidebarChat
-                pic={el.picture}
                 setCurrentSection={setCurrentSection}
+                pic={el.picture}
+                currentChat={currentChat}
                 name={el.username}
                 uid={el._id}
                 setCurrentChat={setCurrentChat}

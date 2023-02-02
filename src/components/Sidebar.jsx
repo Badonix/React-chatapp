@@ -12,14 +12,15 @@ import Notification from "./Notification";
 import axios from "axios";
 function Sidebar({
   currentSection,
-  setCurrentSection,
   setBurgerMenu,
   burgerMenu,
+  setCurrentSection,
 }) {
   const [dropDown, setDropDown] = useState(false);
   const [notifShowing, setNotifShowing] = useState(false);
   const dropdownRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const { user, setUser, image, baseURL } = useGlobalContext();
   const handleClick = (event) => {
     if (!dropDown) {
@@ -52,6 +53,15 @@ function Sidebar({
       setBurgerMenu(false);
     }
   });
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <aside ref={ref} className={burgerMenu ? "sidebar showing" : "sidebar"}>
@@ -73,7 +83,7 @@ function Sidebar({
                 setBurgerMenu(false);
               }}
               className={
-                currentSection == "chat" || !currentSection
+                currentSection == "chat" || currentSection == "msg"
                   ? "new-notif nav-icon-cont active"
                   : "new-notif nav-icon-cont"
               }

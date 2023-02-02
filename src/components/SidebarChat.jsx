@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useGlobalContext } from "../context";
 function SidebarChat({
   title,
@@ -18,11 +19,12 @@ function SidebarChat({
     setCurrentImg(img);
     setCurrentName(name);
   };
+
   return (
     <li
       onClick={() => {
+        setCurrentSection("msg");
         handleChatChange(uid, pic, name);
-        setCurrentSection("");
       }}
       className="sidebar-chat-user"
     >
