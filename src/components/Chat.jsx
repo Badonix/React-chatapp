@@ -9,11 +9,21 @@ import SentMessage from "./SentMessage";
 import RecievedMessage from "./RecievedMessage";
 import { useGlobalContext } from "../context";
 import { Link } from "react-router-dom";
+import axios from "axios";
 function Chat({ setBurgerMenu, socket }) {
   const { baseURL, currentImg, currentName, currentChat } = useGlobalContext();
 
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    axios
+      .post(`${baseURL}api/users/messages`, {
+        userId: localStorage.getItem("id"),
+        senderId: currentChat,
+      })
+      .then((res) => setMessages(res.data));
+  }, [currentChat]);
 
   var handleSendMessage = () => {
     if (inputValue) {
@@ -21,17 +31,17 @@ function Chat({ setBurgerMenu, socket }) {
         ...messages,
         {
           content: inputValue,
-          receiver: currentChat,
-          sender: localStorage.getItem("id"),
+          receiverId: currentChat,
+          senderId: localStorage.getItem("id"),
         },
       ];
-      setMessages(newMessages);
 
       socket.emit("new-message", {
-        sender: localStorage.getItem("id"),
-        receiver: currentChat,
+        senderId: localStorage.getItem("id"),
+        receiverId: currentChat,
         content: inputValue,
       });
+      setMessages(newMessages);
       setInputValue("");
     }
   };
@@ -41,12 +51,17 @@ function Chat({ setBurgerMenu, socket }) {
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
-    console.log(messages);
   }, [messages]);
   useEffect(() => {
     socket.on("recieve-message", (data) => {
-      // console.log(data);
-      setMessages((prevMessages) => [...prevMessages, data]);
+      data["senderId"] = data["sender"];
+      data["receiverId"] = data["receiver"];
+      delete data["sender"];
+      delete data["receiver"];
+      data.receiverId = localStorage.getItem("id");
+      setMessages((prevMessages) => {
+        return [...prevMessages, data];
+      });
     });
     return () => {
       socket.off("recieve-message");
@@ -60,11 +75,10 @@ function Chat({ setBurgerMenu, socket }) {
           ...messages,
           {
             content: inputValue,
-            receiver: currentChat,
-            sender: localStorage.getItem("id"),
+            receiverId: currentChat,
+            senderId: localStorage.getItem("id"),
           },
         ];
-        console.log(messages);
         setMessages(newMessages);
         socket.emit("new-message", {
           sender: localStorage.getItem("id"),
@@ -93,13 +107,13 @@ function Chat({ setBurgerMenu, socket }) {
         </Link>
       </div>
       <div className="chat-body">
-        {messages.map((el, index) => {
+        {messages?.map((el, index) => {
           if (
-            el.sender == localStorage.getItem("id") &&
-            el.receiver == currentChat
+            el.senderId == localStorage.getItem("id") &&
+            el.receiverId == currentChat
           ) {
             return <SentMessage key={index} message={el.content} />;
-          } else if (el.sender == currentChat) {
+          } else if (el.senderId == currentChat) {
             return (
               <RecievedMessage
                 photo={currentImg}

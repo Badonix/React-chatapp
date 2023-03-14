@@ -83,7 +83,7 @@ function Sidebar({
                 setBurgerMenu(false);
               }}
               className={
-                currentSection == "chat" || currentSection == "msg"
+                currentSection == "chat"
                   ? "new-notif nav-icon-cont active"
                   : "new-notif nav-icon-cont"
               }

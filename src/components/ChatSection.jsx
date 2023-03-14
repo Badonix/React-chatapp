@@ -47,7 +47,7 @@ function ChatSection({ setCurrentSection, setBurgerMenu }) {
                 setCurrentChat={setCurrentChat}
                 active={onlineUsers.includes(el._id)}
                 title={el.username}
-                message="Hello, how are you?"
+                message="**placeholder**"
                 pfp={`${baseURL}images/${el?.picture.split("\\")[1]}`}
                 date="12:41"
               />
@@ -60,3 +60,17 @@ function ChatSection({ setCurrentSection, setBurgerMenu }) {
 }
 
 export default ChatSection;
+
+
+// { $match: {$or: [{from: USERNAME}, {to: USERNAME}]}},
+// { $project: {...FIELDS}},
+// { $sort: { timestamp: -1} },
+// {
+  // $group: {
+  //   _id: { $concat: [{ $senderId }, { $recieverId }] },
+  //   userSend: { $first: "$senderId" },
+  //   userReceive: { $first: "$recieverId" },
+  //   content: { $first: "$content" },
+  //   timestamp: { $first: "$timestamp" },
+  // },
+// }

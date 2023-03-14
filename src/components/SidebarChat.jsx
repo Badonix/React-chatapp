@@ -19,12 +19,21 @@ function SidebarChat({
     setCurrentImg(img);
     setCurrentName(name);
   };
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <li
       onClick={() => {
-        setCurrentSection("msg");
         handleChatChange(uid, pic, name);
+        setCurrentSection("msg");
       }}
       className="sidebar-chat-user"
     >
@@ -34,7 +43,6 @@ function SidebarChat({
       </div>
       <div className="sidebar-chat-user-text">
         <h5>{title}</h5>
-        <p>{message}</p>
       </div>
       <div className="sidebar-chat-user-info">
         <p>{date}</p>
